@@ -3,10 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
 <title>SecretLeague — Tournament Registration</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
+    color-scheme: dark;
     --bg: #06080f;
     --panel: #0b0f1c;
     --border: #1a2a4a;
@@ -17,6 +19,8 @@
     --text: #c9d4e8;
     --muted: #4a5a7a;
     --glow: rgba(200,155,60,0.15);
+    --silver: #cbd5e1;
+    --silver-glow: rgba(203, 213, 225, 0.4);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -106,13 +110,14 @@
   }
 
   h1 {
-    font-family: 'Cinzel Decorative', serif;
-    font-size: clamp(1.8rem, 5vw, 2.8rem);
-    font-weight: 900;
-    color: var(--gold);
-    text-shadow: 0 0 30px rgba(232,196,106,0.5), 0 0 60px rgba(232,196,106,0.2);
-    letter-spacing: 0.04em;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(2.2rem, 6vw, 3.2rem);
+    font-weight: 700;
+    color: var(--silver);
+    text-shadow: 0 0 20px var(--silver-glow), 0 0 40px rgba(255,255,255,0.1);
+    letter-spacing: 0.05em;
     line-height: 1.1;
+    text-transform: none;
   }
 
   .subtitle {
@@ -225,7 +230,38 @@
   .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
   /* ── FIELDS ── */
-  .field { margin-bottom: 20px; }
+  .field { 
+    margin-bottom: 20px; 
+    position: relative;
+  }
+
+  .field::after {
+    content: 'Not Required';
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--muted);
+    opacity: 0;
+    transition: all 0.2s ease;
+    pointer-events: none;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transform: translateY(2px);
+  }
+
+  .field:has(label span)::after,
+  .field.required-field::after {
+    content: 'Required';
+    color: var(--accent);
+  }
+
+  .field:hover::after {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   .field label {
     display: block;
     font-size: 0.8rem;
@@ -249,6 +285,16 @@
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
     appearance: none;
+    color-scheme: dark;
+  }
+  
+  /* Fix for Chrome autofill background */
+  .field input:-webkit-autofill,
+  .field input:-webkit-autofill:hover,
+  .field input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--text);
+    -webkit-box-shadow: 0 0 0px 1000px var(--bg) inset;
+    transition: background-color 5000s ease-in-out 0s;
   }
   .field input::placeholder { color: var(--muted); opacity: 0.7; }
   .field input:focus, .field select:focus {
@@ -482,35 +528,46 @@
       <div class="solo-section" id="soloSection">
         <div class="section-label">Player Info</div>
 
-        <div class="field" id="f-ign">
-          <label>In-Game Name <span>*</span></label>
-          <input type="text" id="ign" placeholder="YourDotaName" autocomplete="off">
-          <div class="error-msg">In-game name is required.</div>
+        <div class="grid-2">
+          <div class="field" id="f-ign">
+            <label>In-Game Name <span>*</span></label>
+            <input type="text" id="ign" placeholder="YourDotaName" autocomplete="off">
+            <div class="error-msg">In-game name is required.</div>
+          </div>
+          <div class="field" id="f-steamName">
+            <label>Steam Display Name <span>*</span></label>
+            <input type="text" id="steamName" placeholder="Steam Name" autocomplete="off" maxlength="32">
+            <div class="error-msg">Steam display name is required.</div>
+          </div>
         </div>
 
         <div class="grid-2">
           <div class="field" id="f-steam">
             <label>Steam ID / Friend Code <span>*</span></label>
-            <input type="text" id="steamId" placeholder="76561198..." autocomplete="off">
-            <div class="error-msg">Steam ID is required.</div>
+            <input type="text" id="steamId" placeholder="76561198..." autocomplete="off" maxlength="17" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+            <div class="error-msg">Valid 17-digit Steam ID is required.</div>
           </div>
           <div class="field" id="f-discord">
             <label>Discord Username</label>
-            <input type="text" id="discordUser" placeholder="user#0000" autocomplete="off">
+            <input type="text" id="discordUser" placeholder="user#0000" autocomplete="off" maxlength="32">
           </div>
         </div>
 
         <div class="section-label" style="margin-top:8px;">Rank</div>
-        <div class="rank-grid" id="rankGrid-solo">
-          <!-- injected by JS -->
+        <div class="field required-field">
+          <div class="rank-grid" id="rankGrid-solo">
+            <!-- injected by JS -->
+          </div>
         </div>
-        <div class="field" id="f-rank-solo" style="margin-top:0">
+        <div class="field" id="f-rank-solo" style="margin-top:0; margin-bottom: 0;">
           <div class="error-msg" id="rankErr-solo">Please select a rank.</div>
         </div>
 
         <div class="section-label" style="margin-top:24px;">Primary Position</div>
-        <div class="pos-grid" id="posGrid-solo">
-          <!-- injected by JS -->
+        <div class="field required-field">
+          <div class="pos-grid" id="posGrid-solo">
+            <!-- injected by JS -->
+          </div>
         </div>
         <div class="field" id="f-pos-solo" style="margin-top:4px;margin-bottom:0">
           <div class="error-msg" id="posErr-solo">Please select a position.</div>
@@ -616,19 +673,34 @@ function buildPlayerCards() {
           <input type="text" id="p${i}-ign" placeholder="DotaName" autocomplete="off">
           <div class="error-msg">Required.</div>
         </div>
-        <div class="field" id="f-p${i}-steam">
-          <label>Steam ID / Friend Code <span>*</span></label>
-          <input type="text" id="p${i}-steam" placeholder="76561198..." autocomplete="off">
+        <div class="field" id="f-p${i}-steamName">
+          <label>Steam Display Name <span>*</span></label>
+          <input type="text" id="p${i}-steamName" placeholder="Steam Name" autocomplete="off" maxlength="32">
           <div class="error-msg">Required.</div>
         </div>
       </div>
+      <div class="grid-2">
+        <div class="field" id="f-p${i}-steam">
+          <label>Steam ID / Friend Code ${isCap?'<span>*</span>':''}</label>
+          <input type="text" id="p${i}-steam" placeholder="76561198..." autocomplete="off" maxlength="17" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+          <div class="error-msg">Valid 17-digit Steam ID required.</div>
+        </div>
+        <div class="field" id="f-p${i}-discord">
+          <label>Discord Username ${isCap?'':'(Optional)'}</label>
+          <input type="text" id="p${i}-discord" placeholder="user#0000" autocomplete="off" maxlength="32">
+        </div>
+      </div>
       <div class="section-label" style="margin-top:4px;font-size:0.62rem;">Rank</div>
-      <div class="rank-grid" id="rankGrid-p${i}"></div>
-      <div class="field" id="f-rank-p${i}" style="margin-top:0">
+      <div class="field required-field">
+        <div class="rank-grid" id="rankGrid-p${i}"></div>
+      </div>
+      <div class="field" id="f-rank-p${i}" style="margin-top:0; margin-bottom: 0;">
         <div class="error-msg" id="rankErr-p${i}">Please select a rank.</div>
       </div>
       <div class="section-label" style="margin-top:18px;font-size:0.62rem;">Position</div>
-      <div class="pos-grid" id="posGrid-p${i}"></div>
+      <div class="field required-field">
+        <div class="pos-grid" id="posGrid-p${i}"></div>
+      </div>
       <div class="field" id="f-pos-p${i}" style="margin-top:4px;margin-bottom:0">
         <div class="error-msg" id="posErr-p${i}">Please select a position.</div>
       </div>
@@ -688,20 +760,22 @@ async function handleSubmit() {
 
   if (currentMode === 'solo') {
     const ign = document.getElementById('ign').value.trim();
+    const steamName = document.getElementById('steamName').value.trim();
     const steam = document.getElementById('steamId').value.trim();
     const rank = getRankVal('solo');
     const pos = getPosVal('solo');
 
     setInvalid('f-ign', !ign); if (!ign) ok = false;
-    setInvalid('f-steam', !steam); if (!steam) ok = false;
+    setInvalid('f-steamName', !steamName); if (!steamName) ok = false;
+    
+    const steamValid = steam.length === 17;
+    setInvalid('f-steam', !steamValid); if (!steamValid) ok = false;
 
-    const rankEl = document.getElementById('f-rank-solo');
     const rankErr = document.getElementById('rankErr-solo');
     const noRank = !rank;
     rankErr.style.display = noRank ? 'block' : 'none';
     if (noRank) ok = false;
 
-    const posEl = document.getElementById('f-pos-solo');
     const posErr = document.getElementById('posErr-solo');
     const noPos = !pos;
     posErr.style.display = noPos ? 'block' : 'none';
@@ -713,12 +787,25 @@ async function handleSubmit() {
 
     for (let i = 1; i <= 5; i++) {
       const ign = document.getElementById(`p${i}-ign`).value.trim();
+      const steamName = document.getElementById(`p${i}-steamName`).value.trim();
       const steam = document.getElementById(`p${i}-steam`).value.trim();
       const rank = getRankVal(`p${i}`);
       const pos = getPosVal(`p${i}`);
 
       setInvalid(`f-p${i}-ign`, !ign); if (!ign) ok = false;
-      setInvalid(`f-p${i}-steam`, !steam); if (!steam) ok = false;
+      setInvalid(`f-p${i}-steamName`, !steamName); if (!steamName) ok = false;
+
+      // Steam ID is required only for Captain (Player 1)
+      if (i === 1) {
+        const steamValid = steam.length === 17;
+        setInvalid(`f-p${i}-steam`, !steamValid); if (!steamValid) ok = false;
+      } else if (steam.length > 0) {
+        // If they provided a steam ID, it must be 17 digits
+        const steamValid = steam.length === 17;
+        setInvalid(`f-p${i}-steam`, !steamValid); if (!steamValid) ok = false;
+      } else {
+        setInvalid(`f-p${i}-steam`, false);
+      }
 
       const rankErr = document.getElementById(`rankErr-p${i}`);
       rankErr.style.display = !rank ? 'block' : 'none';
@@ -745,12 +832,13 @@ async function handleSubmit() {
   const ts = new Date().toISOString();
 
   if (currentMode === 'solo') {
-    const ign     = document.getElementById('ign').value.trim();
-    const steam   = document.getElementById('steamId').value.trim();
-    const discord = document.getElementById('discordUser').value.trim();
-    const rank    = getRankVal('solo');
-    const pos     = getPosVal('solo');
-    const posLabel = POSITIONS.find(p => p.val === pos)?.label ?? pos;
+    const ign       = document.getElementById('ign').value.trim();
+    const steamName = document.getElementById('steamName').value.trim();
+    const steam     = document.getElementById('steamId').value.trim();
+    const discord   = document.getElementById('discordUser').value.trim();
+    const rank      = getRankVal('solo');
+    const pos       = getPosVal('solo');
+    const posLabel  = POSITIONS.find(p => p.val === pos)?.label ?? pos;
 
     payload = {
       username: 'SecretLeague',
@@ -759,18 +847,19 @@ async function handleSubmit() {
         title: '⚔️ New Solo Registration',
         color: 0xC89B3C,
         fields: [
-          { name: 'IGN',          value: ign,      inline: true  },
-          { name: 'Steam ID',     value: steam,    inline: true  },
+          { name: 'IGN',          value: ign,           inline: true  },
+          { name: 'Steam Name',   value: steamName,     inline: true  },
+          { name: 'Steam ID',     value: steam,         inline: true  },
           { name: 'Discord',      value: discord || '—', inline: true },
-          { name: 'Rank',         value: rank,     inline: true  },
-          { name: 'Position',     value: posLabel, inline: true  },
+          { name: 'Rank',         value: rank,          inline: true  },
+          { name: 'Position',     value: posLabel,      inline: true  },
         ],
         footer: { text: `SecretLeague · ${ts}` },
         thumbnail: { url: 'https://i.imgur.com/AfFp7pu.png' }
       }]
     };
 
-    sheetsRow = { type: 'solo', timestamp: ts, ign, steam, discord, rank, position: posLabel };
+    sheetsRow = { type: 'solo', timestamp: ts, ign, steamName, steam, discord, rank, position: posLabel };
 
   } else {
     const teamName = document.getElementById('teamName').value.trim();
@@ -778,15 +867,17 @@ async function handleSubmit() {
     const fields  = [{ name: 'Team', value: teamName, inline: false }];
 
     for (let i = 1; i <= 5; i++) {
-      const ign   = document.getElementById(`p${i}-ign`).value.trim();
-      const steam = document.getElementById(`p${i}-steam`).value.trim();
-      const rank  = getRankVal(`p${i}`);
-      const pos   = getPosVal(`p${i}`);
-      const posLabel = POSITIONS.find(p => p.val === pos)?.label ?? pos;
-      players.push({ ign, steam, rank, position: posLabel });
+      const ign       = document.getElementById(`p${i}-ign`).value.trim();
+      const steamName = document.getElementById(`p${i}-steamName`).value.trim();
+      const steam     = document.getElementById(`p${i}-steam`).value.trim();
+      const discord   = document.getElementById(`p${i}-discord`).value.trim();
+      const rank      = getRankVal(`p${i}`);
+      const pos       = getPosVal(`p${i}`);
+      const posLabel  = POSITIONS.find(p => p.val === pos)?.label ?? pos;
+      players.push({ ign, steamName, steam, discord, rank, position: posLabel });
       fields.push({
         name: `Player ${i}${i===1?' (Captain)':''}`,
-        value: `**${ign}**\n${steam}\n${rank} · ${posLabel}`,
+        value: `**${ign}** (${steamName})\nID: ${steam || '—'}\nDiscord: ${discord || '—'}\n${rank} · ${posLabel}`,
         inline: true
       });
     }
