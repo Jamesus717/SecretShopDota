@@ -18,9 +18,9 @@
     --muted: #4a5a7a;
     --glow: rgba(200,155,60,0.15);
   }
- 
+
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
- 
+
   body {
     background-color: var(--bg);
     background-image:
@@ -34,14 +34,14 @@
     align-items: center;
     padding: 40px 16px 60px;
   }
- 
+
   /* ── HEADER ── */
   .header {
     text-align: center;
     margin-bottom: 44px;
     animation: fadeDown 0.7s ease both;
   }
- 
+
   .logo-emblem {
     width: 90px;
     height: 90px;
@@ -49,7 +49,7 @@
     position: relative;
   }
   .logo-emblem svg { width: 100%; height: 100%; }
- 
+
   h1 {
     font-family: 'Cinzel Decorative', serif;
     font-size: clamp(1.8rem, 5vw, 2.8rem);
@@ -59,7 +59,7 @@
     letter-spacing: 0.04em;
     line-height: 1.1;
   }
- 
+
   .subtitle {
     font-family: 'Share Tech Mono', monospace;
     color: var(--muted);
@@ -68,7 +68,7 @@
     text-transform: uppercase;
     margin-top: 8px;
   }
- 
+
   .divider {
     display: flex;
     align-items: center;
@@ -83,7 +83,7 @@
     transform: rotate(45deg);
     box-shadow: 0 0 8px var(--accent);
   }
- 
+
   /* ── CARD ── */
   .card {
     background: var(--panel);
@@ -96,7 +96,7 @@
     overflow: hidden;
     animation: fadeUp 0.7s ease 0.15s both;
   }
- 
+
   .card::before {
     content: '';
     position: absolute;
@@ -104,7 +104,7 @@
     height: 2px;
     background: linear-gradient(90deg, transparent 0%, var(--accent2) 20%, var(--accent) 50%, var(--accent2) 80%, transparent 100%);
   }
- 
+
   .card-corner {
     position: absolute;
     width: 20px; height: 20px;
@@ -116,7 +116,7 @@
   .card-corner.tr { top: 8px; right: 8px; border-width: 1px 1px 0 0; }
   .card-corner.bl { bottom: 8px; left: 8px; border-width: 0 0 1px 1px; }
   .card-corner.br { bottom: 8px; right: 8px; border-width: 0 1px 1px 0; }
- 
+
   /* ── TOGGLE ── */
   .mode-toggle {
     display: grid;
@@ -128,7 +128,7 @@
     margin-bottom: 32px;
     gap: 4px;
   }
- 
+
   .mode-btn {
     padding: 12px;
     font-family: 'Rajdhani', sans-serif;
@@ -154,7 +154,7 @@
     color: var(--gold);
     box-shadow: 0 0 16px rgba(200,155,60,0.1);
   }
- 
+
   /* ── SECTION LABELS ── */
   .section-label {
     font-family: 'Share Tech Mono', monospace;
@@ -168,7 +168,7 @@
     gap: 10px;
   }
   .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
- 
+
   /* ── FIELDS ── */
   .field { margin-bottom: 20px; }
   .field label {
@@ -181,7 +181,7 @@
     margin-bottom: 7px;
   }
   .field label span { color: var(--red); margin-left: 2px; }
- 
+
   .field input, .field select {
     width: 100%;
     background: var(--bg);
@@ -202,10 +202,10 @@
   }
   .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234a5a7a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
   .field select option { background: var(--panel); }
- 
+
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   @media(max-width:520px) { .grid-2 { grid-template-columns: 1fr; } }
- 
+
   /* ── RANK GRID ── */
   .rank-grid {
     display: grid;
@@ -238,7 +238,7 @@
     box-shadow: 0 0 10px rgba(200,155,60,0.1);
   }
   .rank-icon { font-size: 1.5rem; line-height: 1; }
- 
+
   /* ── POSITION ── */
   .pos-grid { display: flex; gap: 8px; flex-wrap: wrap; }
   .pos-option input[type="radio"] { display: none; }
@@ -261,7 +261,7 @@
     color: #b39ddb;
     box-shadow: 0 0 10px rgba(123,94,167,0.12);
   }
- 
+
   /* ── TEAM PLAYERS ── */
   .player-card {
     border: 1px solid var(--border);
@@ -293,7 +293,7 @@
     font-weight: 700;
   }
   .player-num.cap .badge { background: linear-gradient(135deg, var(--accent), #f0d080); }
- 
+
   /* ── SUBMIT ── */
   .submit-btn {
     width: 100%;
@@ -323,7 +323,7 @@
   .submit-btn:hover { box-shadow: 0 0 24px rgba(200,155,60,0.2), 0 0 48px rgba(200,155,60,0.08); transform: translateY(-1px); }
   .submit-btn:hover::before { opacity: 1; }
   .submit-btn:active { transform: translateY(0); }
- 
+
   /* ── SUCCESS ── */
   .success {
     display: none;
@@ -337,7 +337,7 @@
   .success h2 { font-family: 'Cinzel Decorative', serif; color: var(--gold); font-size: 1.4rem; margin-bottom: 10px; }
   .success p { color: var(--muted); font-size: 0.9rem; line-height: 1.7; }
   .success code { font-family: 'Share Tech Mono', monospace; color: var(--accent2); font-size: 0.85rem; }
- 
+
   /* ── ERROR ── */
   .error-msg {
     display: none;
@@ -349,17 +349,17 @@
   }
   .field.invalid input, .field.invalid select { border-color: var(--red); }
   .field.invalid .error-msg { display: block; }
- 
+
   /* ── ANIMS ── */
   @keyframes fadeDown { from { opacity:0; transform:translateY(-18px); } to { opacity:1; transform:none; } }
   @keyframes fadeUp   { from { opacity:0; transform:translateY(18px);  } to { opacity:1; transform:none; } }
- 
+
   /* ── HIDDEN ── */
   .team-section { display: none; }
   .solo-section { display: block; }
   body.team-mode .team-section { display: block; }
   body.team-mode .solo-section { display: none; }
- 
+
   /* ── FOOTER ── */
   .footer-note {
     margin-top: 24px;
@@ -373,7 +373,7 @@
 </style>
 </head>
 <body>
- 
+
 <!-- HEADER -->
 <div class="header">
   <div class="logo-emblem">
@@ -393,24 +393,24 @@
     <div class="divider-line"></div>
   </div>
 </div>
- 
+
 <!-- CARD -->
 <div class="card" id="formCard">
   <div class="card-corner tl"></div>
   <div class="card-corner tr"></div>
   <div class="card-corner bl"></div>
   <div class="card-corner br"></div>
- 
+
   <!-- SUCCESS STATE -->
   <div class="success" id="successMsg">
     <div class="success-icon">⚔️</div>
     <h2>Registration Received</h2>
     <p>Your entry has been submitted to <code>SecretLeague</code>.<br>An admin will review and confirm your spot.<br>Good luck, soldier.</p>
   </div>
- 
+
   <!-- FORM -->
   <div id="formContent">
- 
+
     <!-- MODE TOGGLE -->
     <div class="mode-toggle">
       <button class="mode-btn active" id="soloBtn" onclick="setMode('solo')">
@@ -420,17 +420,17 @@
         <span>🛡️</span> Team Entry
       </button>
     </div>
- 
+
     <!-- SOLO SECTION -->
     <div class="solo-section" id="soloSection">
       <div class="section-label">Player Info</div>
- 
+
       <div class="field" id="f-ign">
         <label>In-Game Name <span>*</span></label>
         <input type="text" id="ign" placeholder="YourDotaName" autocomplete="off">
         <div class="error-msg">In-game name is required.</div>
       </div>
- 
+
       <div class="grid-2">
         <div class="field" id="f-steam">
           <label>Steam ID / Friend Code <span>*</span></label>
@@ -442,7 +442,7 @@
           <input type="text" id="discordUser" placeholder="user#0000" autocomplete="off">
         </div>
       </div>
- 
+
       <div class="section-label" style="margin-top:8px;">Rank</div>
       <div class="rank-grid" id="rankGrid-solo">
         <!-- injected by JS -->
@@ -450,7 +450,7 @@
       <div class="field" id="f-rank-solo" style="margin-top:0">
         <div class="error-msg" id="rankErr-solo">Please select a rank.</div>
       </div>
- 
+
       <div class="section-label" style="margin-top:24px;">Primary Position</div>
       <div class="pos-grid" id="posGrid-solo">
         <!-- injected by JS -->
@@ -459,28 +459,28 @@
         <div class="error-msg" id="posErr-solo">Please select a position.</div>
       </div>
     </div>
- 
+
     <!-- TEAM SECTION -->
     <div class="team-section" id="teamSection">
       <div class="section-label">Team Info</div>
- 
+
       <div class="field" id="f-teamname">
         <label>Team Name <span>*</span></label>
         <input type="text" id="teamName" placeholder="Team Enigma" autocomplete="off">
         <div class="error-msg">Team name is required.</div>
       </div>
- 
+
       <div id="playersContainer">
         <!-- players injected by JS -->
       </div>
     </div>
- 
+
     <button class="submit-btn" onclick="handleSubmit()">⚔ Submit Entry ⚔</button>
   </div>
 </div>
- 
+
 <p class="footer-note">// SecretLeague · In-House Tournament · Discord Submissions Only //</p>
- 
+
 <script>
 const RANKS = [
   { icon:'🥉', label:'Herald' },
@@ -492,7 +492,7 @@ const RANKS = [
   { icon:'💎', label:'Divine' },
   { icon:'🔱', label:'Immortal' },
 ];
- 
+
 const POSITIONS = [
   { val:'1', label:'Pos 1 — Carry' },
   { val:'2', label:'Pos 2 — Mid' },
@@ -500,7 +500,7 @@ const POSITIONS = [
   { val:'4', label:'Pos 4 — Soft Support' },
   { val:'5', label:'Pos 5 — Hard Support' },
 ];
- 
+
 function buildRankGrid(containerId, prefix) {
   const el = document.getElementById(containerId);
   el.innerHTML = RANKS.map((r,i) => `
@@ -512,7 +512,7 @@ function buildRankGrid(containerId, prefix) {
       </label>
     </div>`).join('');
 }
- 
+
 function buildPosGrid(containerId, prefix) {
   const el = document.getElementById(containerId);
   el.innerHTML = POSITIONS.map(p => `
@@ -521,7 +521,7 @@ function buildPosGrid(containerId, prefix) {
       <label for="pos-${prefix}-${p.val}">${p.label}</label>
     </div>`).join('');
 }
- 
+
 function buildPlayerCards() {
   const c = document.getElementById('playersContainer');
   c.innerHTML = '';
@@ -557,94 +557,191 @@ function buildPlayerCards() {
       </div>
     </div>`;
   }
- 
+
   for (let i = 1; i <= 5; i++) {
     buildRankGrid(`rankGrid-p${i}`, `p${i}`);
     buildPosGrid(`posGrid-p${i}`, `p${i}`);
   }
 }
- 
+
 // INIT
 buildRankGrid('rankGrid-solo', 'solo');
 buildPosGrid('posGrid-solo', 'solo');
 buildPlayerCards();
- 
+
 let currentMode = 'solo';
- 
+
 function setMode(mode) {
   currentMode = mode;
   document.body.classList.toggle('team-mode', mode === 'team');
   document.getElementById('soloBtn').classList.toggle('active', mode === 'solo');
   document.getElementById('teamBtn').classList.toggle('active', mode === 'team');
 }
- 
+
 function setInvalid(fieldId, invalid) {
   document.getElementById(fieldId)?.classList.toggle('invalid', invalid);
 }
- 
+
 function getRankVal(prefix) {
   const sel = document.querySelector(`input[name="rank-${prefix}"]:checked`);
   return sel ? sel.value : '';
 }
- 
+
 function getPosVal(prefix) {
   const sel = document.querySelector(`input[name="pos-${prefix}"]:checked`);
   return sel ? sel.value : '';
 }
- 
+
 function handleSubmit() {
   let ok = true;
- 
+
   if (currentMode === 'solo') {
     const ign = document.getElementById('ign').value.trim();
     const steam = document.getElementById('steamId').value.trim();
     const rank = getRankVal('solo');
     const pos = getPosVal('solo');
- 
+
     setInvalid('f-ign', !ign); if (!ign) ok = false;
     setInvalid('f-steam', !steam); if (!steam) ok = false;
- 
+
     const rankEl = document.getElementById('f-rank-solo');
     const rankErr = document.getElementById('rankErr-solo');
     const noRank = !rank;
     rankErr.style.display = noRank ? 'block' : 'none';
     if (noRank) ok = false;
- 
+
     const posEl = document.getElementById('f-pos-solo');
     const posErr = document.getElementById('posErr-solo');
     const noPos = !pos;
     posErr.style.display = noPos ? 'block' : 'none';
     if (noPos) ok = false;
- 
+
   } else {
     const tname = document.getElementById('teamName').value.trim();
     setInvalid('f-teamname', !tname); if (!tname) ok = false;
- 
+
     for (let i = 1; i <= 5; i++) {
       const ign = document.getElementById(`p${i}-ign`).value.trim();
       const steam = document.getElementById(`p${i}-steam`).value.trim();
       const rank = getRankVal(`p${i}`);
       const pos = getPosVal(`p${i}`);
- 
+
       setInvalid(`f-p${i}-ign`, !ign); if (!ign) ok = false;
       setInvalid(`f-p${i}-steam`, !steam); if (!steam) ok = false;
- 
+
       const rankErr = document.getElementById(`rankErr-p${i}`);
       rankErr.style.display = !rank ? 'block' : 'none';
       if (!rank) ok = false;
- 
+
       const posErr = document.getElementById(`posErr-p${i}`);
       posErr.style.display = !pos ? 'block' : 'none';
       if (!pos) ok = false;
     }
   }
- 
+
   if (!ok) return;
- 
-  // All valid — show success
-  document.getElementById('formContent').style.display = 'none';
-  const suc = document.getElementById('successMsg');
-  suc.style.display = 'flex';
+
+  // ── CONFIG ──────────────────────────────────────────────
+  const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1495866494699962459/rIGHgkEekCx4rTyYq10t0QjtXmqw_vyYZOp6Y2APAsT49iXGVDambTyVuV3kaQjUv4p9';
+  const SHEETS_WEBHOOK  = 'https://script.google.com/macros/s/AKfycbxY0KeVL6mUV3tWUEKmMObxdmMlh9I9nJ_Z1seGTHLymuloA2NpnXRy6U3srGYkiS1vkw/exec';
+  // ────────────────────────────────────────────────────────
+
+  const btn = document.querySelector('.submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+
+  let payload, sheetsRow;
+  const ts = new Date().toISOString();
+
+  if (currentMode === 'solo') {
+    const ign     = document.getElementById('ign').value.trim();
+    const steam   = document.getElementById('steamId').value.trim();
+    const discord = document.getElementById('discordUser').value.trim();
+    const rank    = getRankVal('solo');
+    const pos     = getPosVal('solo');
+    const posLabel = POSITIONS.find(p => p.val === pos)?.label ?? pos;
+
+    payload = {
+      username: 'SecretLeague',
+      avatar_url: 'https://i.imgur.com/AfFp7pu.png',
+      embeds: [{
+        title: '⚔️ New Solo Registration',
+        color: 0xC89B3C,
+        fields: [
+          { name: 'IGN',          value: ign,      inline: true  },
+          { name: 'Steam ID',     value: steam,    inline: true  },
+          { name: 'Discord',      value: discord || '—', inline: true },
+          { name: 'Rank',         value: rank,     inline: true  },
+          { name: 'Position',     value: posLabel, inline: true  },
+        ],
+        footer: { text: `SecretLeague · ${ts}` },
+        thumbnail: { url: 'https://i.imgur.com/AfFp7pu.png' }
+      }]
+    };
+
+    sheetsRow = { type: 'solo', timestamp: ts, ign, steam, discord, rank, position: posLabel };
+
+  } else {
+    const teamName = document.getElementById('teamName').value.trim();
+    const players = [];
+    const fields  = [{ name: 'Team', value: teamName, inline: false }];
+
+    for (let i = 1; i <= 5; i++) {
+      const ign   = document.getElementById(`p${i}-ign`).value.trim();
+      const steam = document.getElementById(`p${i}-steam`).value.trim();
+      const rank  = getRankVal(`p${i}`);
+      const pos   = getPosVal(`p${i}`);
+      const posLabel = POSITIONS.find(p => p.val === pos)?.label ?? pos;
+      players.push({ ign, steam, rank, position: posLabel });
+      fields.push({
+        name: `Player ${i}${i===1?' (Captain)':''}`,
+        value: `**${ign}**\n${steam}\n${rank} · ${posLabel}`,
+        inline: true
+      });
+    }
+
+    payload = {
+      username: 'SecretLeague',
+      avatar_url: 'https://i.imgur.com/AfFp7pu.png',
+      embeds: [{
+        title: `🛡️ New Team Registration — ${teamName}`,
+        color: 0x7B5EA7,
+        fields,
+        footer: { text: `SecretLeague · ${ts}` }
+      }]
+    };
+
+    sheetsRow = { type: 'team', timestamp: ts, teamName, players };
+  }
+
+  try {
+    const results = await Promise.allSettled([
+      fetch(DISCORD_WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }),
+      fetch(SHEETS_WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(sheetsRow)
+      })
+    ]);
+
+    const discordOk = results[0].status === 'fulfilled' && results[0].value.ok;
+    const sheetsOk  = results[1].status === 'fulfilled' && results[1].value.ok;
+
+    if (!discordOk && !sheetsOk) throw new Error('Both endpoints failed');
+
+    document.getElementById('formContent').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'flex';
+
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = '⚔ Submit Entry ⚔';
+    alert('Submission failed. Please try again or contact an admin.');
+    console.error(err);
+  }
 }
 </script>
 </body>
