@@ -592,7 +592,7 @@ function getPosVal(prefix) {
   return sel ? sel.value : '';
 }
 
-function handleSubmit() {
+async function handleSubmit() {
   let ok = true;
 
   if (currentMode === 'solo') {
