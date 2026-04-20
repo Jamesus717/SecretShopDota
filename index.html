@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SecretLeague — Tournament Registration</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06080f;
+    --panel: #0b0f1c;
+    --border: #1a2a4a;
+    --accent: #c89b3c;
+    --accent2: #7b5ea7;
+    --gold: #e8c46a;
+    --red: #c0392b;
+    --text: #c9d4e8;
+    --muted: #4a5a7a;
+    --glow: rgba(200,155,60,0.15);
+  }
+ 
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+  body {
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(123,94,167,0.18) 0%, transparent 70%),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231a2a4a' fill-opacity='0.3'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    font-family: 'Rajdhani', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 16px 60px;
+  }
+ 
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    margin-bottom: 44px;
+    animation: fadeDown 0.7s ease both;
+  }
+ 
+  .logo-emblem {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 16px;
+    position: relative;
+  }
+  .logo-emblem svg { width: 100%; height: 100%; }
+ 
+  h1 {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    font-weight: 900;
+    color: var(--gold);
+    text-shadow: 0 0 30px rgba(232,196,106,0.5), 0 0 60px rgba(232,196,106,0.2);
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+  }
+ 
+  .subtitle {
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--muted);
+    font-size: 0.78rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+ 
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 18px auto 0;
+    width: 320px;
+  }
+  .divider-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
+  .divider-diamond {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    transform: rotate(45deg);
+    box-shadow: 0 0 8px var(--accent);
+  }
+ 
+  /* ── CARD ── */
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    width: 100%;
+    max-width: 680px;
+    padding: 36px 40px;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.7s ease 0.15s both;
+  }
+ 
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, var(--accent2) 20%, var(--accent) 50%, var(--accent2) 80%, transparent 100%);
+  }
+ 
+  .card-corner {
+    position: absolute;
+    width: 20px; height: 20px;
+    border-color: var(--accent);
+    border-style: solid;
+    opacity: 0.6;
+  }
+  .card-corner.tl { top: 8px; left: 8px; border-width: 1px 0 0 1px; }
+  .card-corner.tr { top: 8px; right: 8px; border-width: 1px 1px 0 0; }
+  .card-corner.bl { bottom: 8px; left: 8px; border-width: 0 0 1px 1px; }
+  .card-corner.br { bottom: 8px; right: 8px; border-width: 0 1px 1px 0; }
+ 
+  /* ── TOGGLE ── */
+  .mode-toggle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px;
+    margin-bottom: 32px;
+    gap: 4px;
+  }
+ 
+  .mode-btn {
+    padding: 12px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .mode-btn:hover { color: var(--text); border-color: var(--border); }
+  .mode-btn.active {
+    background: linear-gradient(135deg, rgba(200,155,60,0.12), rgba(123,94,167,0.12));
+    border-color: var(--accent);
+    color: var(--gold);
+    box-shadow: 0 0 16px rgba(200,155,60,0.1);
+  }
+ 
+  /* ── SECTION LABELS ── */
+  .section-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+ 
+  /* ── FIELDS ── */
+  .field { margin-bottom: 20px; }
+  .field label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+  .field label span { color: var(--red); margin-left: 2px; }
+ 
+  .field input, .field select {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 11px 14px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    appearance: none;
+  }
+  .field input::placeholder { color: var(--muted); opacity: 0.7; }
+  .field input:focus, .field select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(200,155,60,0.08);
+  }
+  .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234a5a7a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  .field select option { background: var(--panel); }
+ 
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media(max-width:520px) { .grid-2 { grid-template-columns: 1fr; } }
+ 
+  /* ── RANK GRID ── */
+  .rank-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 8px;
+  }
+  .rank-option input[type="radio"] { display: none; }
+  .rank-option label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 6px 8px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg);
+    cursor: pointer;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    text-transform: uppercase;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .rank-option label:hover { border-color: var(--accent2); color: var(--text); }
+  .rank-option input[type="radio"]:checked + label {
+    border-color: var(--accent);
+    background: rgba(200,155,60,0.07);
+    color: var(--gold);
+    box-shadow: 0 0 10px rgba(200,155,60,0.1);
+  }
+  .rank-icon { font-size: 1.5rem; line-height: 1; }
+ 
+  /* ── POSITION ── */
+  .pos-grid { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pos-option input[type="radio"] { display: none; }
+  .pos-option label {
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    background: var(--bg);
+    cursor: pointer;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--muted);
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .pos-option label:hover { border-color: var(--accent2); color: var(--text); }
+  .pos-option input[type="radio"]:checked + label {
+    border-color: var(--accent2);
+    background: rgba(123,94,167,0.12);
+    color: #b39ddb;
+    box-shadow: 0 0 10px rgba(123,94,167,0.12);
+  }
+ 
+  /* ── TEAM PLAYERS ── */
+  .player-card {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 14px;
+    background: rgba(6,8,15,0.5);
+    position: relative;
+    animation: fadeUp 0.3s ease both;
+  }
+  .player-num {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .player-num .badge {
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    color: var(--bg);
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+  .player-num.cap .badge { background: linear-gradient(135deg, var(--accent), #f0d080); }
+ 
+  /* ── SUBMIT ── */
+  .submit-btn {
+    width: 100%;
+    margin-top: 28px;
+    padding: 16px;
+    background: linear-gradient(135deg, rgba(200,155,60,0.15), rgba(123,94,167,0.15));
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    color: var(--gold);
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  .submit-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(200,155,60,0.2), rgba(123,94,167,0.2));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .submit-btn:hover { box-shadow: 0 0 24px rgba(200,155,60,0.2), 0 0 48px rgba(200,155,60,0.08); transform: translateY(-1px); }
+  .submit-btn:hover::before { opacity: 1; }
+  .submit-btn:active { transform: translateY(0); }
+ 
+  /* ── SUCCESS ── */
+  .success {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .success-icon { font-size: 3.5rem; margin-bottom: 16px; }
+  .success h2 { font-family: 'Cinzel Decorative', serif; color: var(--gold); font-size: 1.4rem; margin-bottom: 10px; }
+  .success p { color: var(--muted); font-size: 0.9rem; line-height: 1.7; }
+  .success code { font-family: 'Share Tech Mono', monospace; color: var(--accent2); font-size: 0.85rem; }
+ 
+  /* ── ERROR ── */
+  .error-msg {
+    display: none;
+    color: #e74c3c;
+    font-size: 0.78rem;
+    font-family: 'Share Tech Mono', monospace;
+    margin-top: 5px;
+    letter-spacing: 0.03em;
+  }
+  .field.invalid input, .field.invalid select { border-color: var(--red); }
+  .field.invalid .error-msg { display: block; }
+ 
+  /* ── ANIMS ── */
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-18px); } to { opacity:1; transform:none; } }
+  @keyframes fadeUp   { from { opacity:0; transform:translateY(18px);  } to { opacity:1; transform:none; } }
+ 
+  /* ── HIDDEN ── */
+  .team-section { display: none; }
+  .solo-section { display: block; }
+  body.team-mode .team-section { display: block; }
+  body.team-mode .solo-section { display: none; }
+ 
+  /* ── FOOTER ── */
+  .footer-note {
+    margin-top: 24px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-align: center;
+    opacity: 0.6;
+  }
+</style>
+</head>
+<body>
+ 
+<!-- HEADER -->
+<div class="header">
+  <div class="logo-emblem">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" stroke="#c89b3c" stroke-width="1.5" fill="none" opacity="0.5"/>
+      <polygon points="50,14 86,32 86,68 50,86 14,68 14,32" stroke="#7b5ea7" stroke-width="1" fill="none" opacity="0.4"/>
+      <path d="M50 20 L65 40 L80 35 L70 55 L80 70 L60 62 L50 80 L40 62 L20 70 L30 55 L20 35 L35 40 Z" fill="none" stroke="#c89b3c" stroke-width="1.2" opacity="0.7"/>
+      <circle cx="50" cy="50" r="7" fill="#c89b3c" opacity="0.9"/>
+      <circle cx="50" cy="50" r="12" fill="none" stroke="#c89b3c" stroke-width="0.8" opacity="0.4"/>
+    </svg>
+  </div>
+  <h1>SecretLeague</h1>
+  <p class="subtitle">In-House Tournament Registration</p>
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-diamond"></div>
+    <div class="divider-line"></div>
+  </div>
+</div>
+ 
+<!-- CARD -->
+<div class="card" id="formCard">
+  <div class="card-corner tl"></div>
+  <div class="card-corner tr"></div>
+  <div class="card-corner bl"></div>
+  <div class="card-corner br"></div>
+ 
+  <!-- SUCCESS STATE -->
+  <div class="success" id="successMsg">
+    <div class="success-icon">⚔️</div>
+    <h2>Registration Received</h2>
+    <p>Your entry has been submitted to <code>SecretLeague</code>.<br>An admin will review and confirm your spot.<br>Good luck, soldier.</p>
+  </div>
+ 
+  <!-- FORM -->
+  <div id="formContent">
+ 
+    <!-- MODE TOGGLE -->
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="soloBtn" onclick="setMode('solo')">
+        <span>⚔️</span> Solo Entry
+      </button>
+      <button class="mode-btn" id="teamBtn" onclick="setMode('team')">
+        <span>🛡️</span> Team Entry
+      </button>
+    </div>
+ 
+    <!-- SOLO SECTION -->
+    <div class="solo-section" id="soloSection">
+      <div class="section-label">Player Info</div>
+ 
+      <div class="field" id="f-ign">
+        <label>In-Game Name <span>*</span></label>
+        <input type="text" id="ign" placeholder="YourDotaName" autocomplete="off">
+        <div class="error-msg">In-game name is required.</div>
+      </div>
+ 
+      <div class="grid-2">
+        <div class="field" id="f-steam">
+          <label>Steam ID / Friend Code <span>*</span></label>
+          <input type="text" id="steamId" placeholder="76561198..." autocomplete="off">
+          <div class="error-msg">Steam ID is required.</div>
+        </div>
+        <div class="field" id="f-discord">
+          <label>Discord Username</label>
+          <input type="text" id="discordUser" placeholder="user#0000" autocomplete="off">
+        </div>
+      </div>
+ 
+      <div class="section-label" style="margin-top:8px;">Rank</div>
+      <div class="rank-grid" id="rankGrid-solo">
+        <!-- injected by JS -->
+      </div>
+      <div class="field" id="f-rank-solo" style="margin-top:0">
+        <div class="error-msg" id="rankErr-solo">Please select a rank.</div>
+      </div>
+ 
+      <div class="section-label" style="margin-top:24px;">Primary Position</div>
+      <div class="pos-grid" id="posGrid-solo">
+        <!-- injected by JS -->
+      </div>
+      <div class="field" id="f-pos-solo" style="margin-top:4px;margin-bottom:0">
+        <div class="error-msg" id="posErr-solo">Please select a position.</div>
+      </div>
+    </div>
+ 
+    <!-- TEAM SECTION -->
+    <div class="team-section" id="teamSection">
+      <div class="section-label">Team Info</div>
+ 
+      <div class="field" id="f-teamname">
+        <label>Team Name <span>*</span></label>
+        <input type="text" id="teamName" placeholder="Team Enigma" autocomplete="off">
+        <div class="error-msg">Team name is required.</div>
+      </div>
+ 
+      <div id="playersContainer">
+        <!-- players injected by JS -->
+      </div>
+    </div>
+ 
+    <button class="submit-btn" onclick="handleSubmit()">⚔ Submit Entry ⚔</button>
+  </div>
+</div>
+ 
+<p class="footer-note">// SecretLeague · In-House Tournament · Discord Submissions Only //</p>
+ 
+<script>
+const RANKS = [
+  { icon:'🥉', label:'Herald' },
+  { icon:'🔔', label:'Guardian' },
+  { icon:'🛡️', label:'Crusader' },
+  { icon:'⚔️', label:'Archon' },
+  { icon:'🌟', label:'Legend' },
+  { icon:'👑', label:'Ancient' },
+  { icon:'💎', label:'Divine' },
+  { icon:'🔱', label:'Immortal' },
+];
+ 
+const POSITIONS = [
+  { val:'1', label:'Pos 1 — Carry' },
+  { val:'2', label:'Pos 2 — Mid' },
+  { val:'3', label:'Pos 3 — Offlane' },
+  { val:'4', label:'Pos 4 — Soft Support' },
+  { val:'5', label:'Pos 5 — Hard Support' },
+];
+ 
+function buildRankGrid(containerId, prefix) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = RANKS.map((r,i) => `
+    <div class="rank-option">
+      <input type="radio" name="rank-${prefix}" id="rank-${prefix}-${i}" value="${r.label}">
+      <label for="rank-${prefix}-${i}">
+        <span class="rank-icon">${r.icon}</span>
+        ${r.label}
+      </label>
+    </div>`).join('');
+}
+ 
+function buildPosGrid(containerId, prefix) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = POSITIONS.map(p => `
+    <div class="pos-option">
+      <input type="radio" name="pos-${prefix}" id="pos-${prefix}-${p.val}" value="${p.val}">
+      <label for="pos-${prefix}-${p.val}">${p.label}</label>
+    </div>`).join('');
+}
+ 
+function buildPlayerCards() {
+  const c = document.getElementById('playersContainer');
+  c.innerHTML = '';
+  for (let i = 1; i <= 5; i++) {
+    const isCap = i === 1;
+    c.innerHTML += `
+    <div class="player-card">
+      <div class="player-num ${isCap?'cap':''}">
+        <div class="badge">${i}</div>
+        PLAYER ${i}${isCap?' — CAPTAIN':''}
+      </div>
+      <div class="grid-2">
+        <div class="field" id="f-p${i}-ign">
+          <label>In-Game Name <span>*</span></label>
+          <input type="text" id="p${i}-ign" placeholder="DotaName" autocomplete="off">
+          <div class="error-msg">Required.</div>
+        </div>
+        <div class="field" id="f-p${i}-steam">
+          <label>Steam ID / Friend Code <span>*</span></label>
+          <input type="text" id="p${i}-steam" placeholder="76561198..." autocomplete="off">
+          <div class="error-msg">Required.</div>
+        </div>
+      </div>
+      <div class="section-label" style="margin-top:4px;font-size:0.62rem;">Rank</div>
+      <div class="rank-grid" id="rankGrid-p${i}"></div>
+      <div class="field" id="f-rank-p${i}" style="margin-top:0">
+        <div class="error-msg" id="rankErr-p${i}">Please select a rank.</div>
+      </div>
+      <div class="section-label" style="margin-top:18px;font-size:0.62rem;">Position</div>
+      <div class="pos-grid" id="posGrid-p${i}"></div>
+      <div class="field" id="f-pos-p${i}" style="margin-top:4px;margin-bottom:0">
+        <div class="error-msg" id="posErr-p${i}">Please select a position.</div>
+      </div>
+    </div>`;
+  }
+ 
+  for (let i = 1; i <= 5; i++) {
+    buildRankGrid(`rankGrid-p${i}`, `p${i}`);
+    buildPosGrid(`posGrid-p${i}`, `p${i}`);
+  }
+}
+ 
+// INIT
+buildRankGrid('rankGrid-solo', 'solo');
+buildPosGrid('posGrid-solo', 'solo');
+buildPlayerCards();
+ 
+let currentMode = 'solo';
+ 
+function setMode(mode) {
+  currentMode = mode;
+  document.body.classList.toggle('team-mode', mode === 'team');
+  document.getElementById('soloBtn').classList.toggle('active', mode === 'solo');
+  document.getElementById('teamBtn').classList.toggle('active', mode === 'team');
+}
+ 
+function setInvalid(fieldId, invalid) {
+  document.getElementById(fieldId)?.classList.toggle('invalid', invalid);
+}
+ 
+function getRankVal(prefix) {
+  const sel = document.querySelector(`input[name="rank-${prefix}"]:checked`);
+  return sel ? sel.value : '';
+}
+ 
+function getPosVal(prefix) {
+  const sel = document.querySelector(`input[name="pos-${prefix}"]:checked`);
+  return sel ? sel.value : '';
+}
+ 
+function handleSubmit() {
+  let ok = true;
+ 
+  if (currentMode === 'solo') {
+    const ign = document.getElementById('ign').value.trim();
+    const steam = document.getElementById('steamId').value.trim();
+    const rank = getRankVal('solo');
+    const pos = getPosVal('solo');
+ 
+    setInvalid('f-ign', !ign); if (!ign) ok = false;
+    setInvalid('f-steam', !steam); if (!steam) ok = false;
+ 
+    const rankEl = document.getElementById('f-rank-solo');
+    const rankErr = document.getElementById('rankErr-solo');
+    const noRank = !rank;
+    rankErr.style.display = noRank ? 'block' : 'none';
+    if (noRank) ok = false;
+ 
+    const posEl = document.getElementById('f-pos-solo');
+    const posErr = document.getElementById('posErr-solo');
+    const noPos = !pos;
+    posErr.style.display = noPos ? 'block' : 'none';
+    if (noPos) ok = false;
+ 
+  } else {
+    const tname = document.getElementById('teamName').value.trim();
+    setInvalid('f-teamname', !tname); if (!tname) ok = false;
+ 
+    for (let i = 1; i <= 5; i++) {
+      const ign = document.getElementById(`p${i}-ign`).value.trim();
+      const steam = document.getElementById(`p${i}-steam`).value.trim();
+      const rank = getRankVal(`p${i}`);
+      const pos = getPosVal(`p${i}`);
+ 
+      setInvalid(`f-p${i}-ign`, !ign); if (!ign) ok = false;
+      setInvalid(`f-p${i}-steam`, !steam); if (!steam) ok = false;
+ 
+      const rankErr = document.getElementById(`rankErr-p${i}`);
+      rankErr.style.display = !rank ? 'block' : 'none';
+      if (!rank) ok = false;
+ 
+      const posErr = document.getElementById(`posErr-p${i}`);
+      posErr.style.display = !pos ? 'block' : 'none';
+      if (!pos) ok = false;
+    }
+  }
+ 
+  if (!ok) return;
+ 
+  // All valid — show success
+  document.getElementById('formContent').style.display = 'none';
+  const suc = document.getElementById('successMsg');
+  suc.style.display = 'flex';
+}
+</script>
+</body>
+</html>
