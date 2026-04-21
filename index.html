@@ -1,1024 +1,669 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="dark">
-<title>SecretLeague — Tournament Registration</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<style>
-  :root {
-    color-scheme: dark;
-    --bg: #06080f;
-    --panel: #0b0f1c;
-    --border: #1a2a4a;
-    --accent: #c89b3c;
-    --accent2: #7b5ea7;
-    --gold: #e8c46a;
-    --red: #c0392b;
-    --text: #c9d4e8;
-    --muted: #4a5a7a;
-    --glow: #1a1c23;
-    --silver: #cbd5e1;
-    --silver-glow: #2d3748;
-    --secondary-glow: #0f172a;
-    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  [data-theme="light"] {
-    color-scheme: light;
-    --bg: #f4f6f9;
-    --panel: #ffffff;
-    --border: #d8dee9;
-    --accent: #b08d48;
-    --accent2: #7b5ea7;
-    --gold: #9a7d3a;
-    --red: #c0392b;
-    --text: #2e3440;
-    --muted: #4c566a;
-    --glow: #e5e9f0;
-    --silver: #4c566a;
-    --silver-glow: #d8dee9;
-    --secondary-glow: #e5e9f0;
-  }
-
-  *, *::before, *::after { 
-    box-sizing: border-box; 
-    margin: 0; 
-    padding: 0; 
-    transition: background-color var(--transition), border-color var(--transition), color var(--transition), box-shadow var(--transition);
-  }
-
-  body {
-    background-color: var(--bg);
-    background-image:
-      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231a2a4a' fill-opacity='0.3'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    font-family: 'Rajdhani', sans-serif;
-    color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px 16px 60px;
-  }
-
-  [data-theme="light"] body {
-    background-image:
-      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d1d9e6' fill-opacity='0.6'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  }
-
-  /* ── THEME TOGGLE ── */
-  .theme-toggle {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 44px;
-    height: 44px;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 1000;
-    transition: all var(--transition);
-    color: var(--gold);
-    box-shadow: 0 4px 12px var(--glow);
-  }
-
-  .theme-toggle:hover {
-    border-color: var(--accent);
-    transform: rotate(15deg);
-    box-shadow: 0 0 15px var(--glow);
-  }
-
-  .theme-toggle svg {
-    width: 22px;
-    height: 22px;
-    fill: currentColor;
-  }
-
-  [data-theme="light"] .sun-icon { display: block; }
-  [data-theme="light"] .moon-icon { display: none; }
-  .sun-icon { display: none; }
-  .moon-icon { display: block; }
-
-  /* ── HEADER ── */
-  .header {
-    text-align: center;
-    margin-bottom: 24px;
-    animation: fadeDown 0.7s ease both;
-  }
-
-  .logo-emblem {
-    width: 120px;
-    height: 120px;
-    margin: 0 auto 16px;
-    position: relative;
-  }
-  .logo-emblem img { width: 100%; height: 100%; object-fit: contain; }
-
-  /* ── NAV BAR ── */
-  .nav-bar {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 32px;
-    background: var(--panel);
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    animation: fadeDown 0.7s ease both;
-  }
-
-  .nav-item {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.9rem;
-    color: var(--muted);
-    text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    padding: 8px 12px;
-    border-radius: 4px;
-  }
-
-  .nav-item:hover {
-    color: var(--gold);
-    background: var(--glow);
-  }
-
-  .nav-item.active {
-    color: var(--gold);
-    border-bottom: 2px solid var(--accent);
-    background: var(--glow);
-  }
-
-  /* ── BORTYGPT ── */
-  .wip-container {
-    text-align: center;
-    padding: 60px 20px;
-  }
-
-  .wip-title {
-    font-family: 'Cinzel Decorative', serif;
-    font-size: 2rem;
-    color: var(--gold);
-    margin-bottom: 20px;
-  }
-
-  .wip-text {
-    font-family: 'Share Tech Mono', monospace;
-    color: var(--muted);
-    font-size: 1.1rem;
-  }
-
-  h1 {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: clamp(2.2rem, 6vw, 3.2rem);
-    font-weight: 700;
-    color: var(--silver);
-    text-shadow: 0 0 20px var(--silver-glow), 0 0 40px var(--secondary-glow);
-    letter-spacing: 0.05em;
-    line-height: 1.1;
-    text-transform: none;
-  }
-
-  .subtitle {
-    font-family: 'Share Tech Mono', monospace;
-    color: var(--muted);
-    font-size: 0.78rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    margin-top: 8px;
-  }
-
-  .divider {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 18px auto 0;
-    width: 320px;
-  }
-  .divider-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
-  .divider-diamond {
-    width: 8px; height: 8px;
-    background: var(--accent);
-    transform: rotate(45deg);
-    box-shadow: 0 0 8px var(--accent);
-  }
-
-  /* ── CARD ── */
-  .card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    width: 100%;
-    max-width: 680px;
-    padding: 36px 40px;
-    position: relative;
-    overflow: hidden;
-    animation: fadeUp 0.7s ease 0.15s both;
-  }
-
-  .card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent 0%, var(--accent2) 20%, var(--accent) 50%, var(--accent2) 80%, transparent 100%);
-  }
-
-  .card-corner {
-    position: absolute;
-    width: 20px; height: 20px;
-    border-color: var(--accent);
-    border-style: solid;
-    opacity: 0.6;
-  }
-  .card-corner.tl { top: 8px; left: 8px; border-width: 1px 0 0 1px; }
-  .card-corner.tr { top: 8px; right: 8px; border-width: 1px 1px 0 0; }
-  .card-corner.bl { bottom: 8px; left: 8px; border-width: 0 0 1px 1px; }
-  .card-corner.br { bottom: 8px; right: 8px; border-width: 0 1px 1px 0; }
-
-  /* ── TOGGLE ── */
-  .mode-toggle {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 4px;
-    margin-bottom: 32px;
-    gap: 4px;
-  }
-
-  .mode-btn {
-    padding: 12px;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    border: 1px solid transparent;
-    border-radius: 3px;
-    background: transparent;
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.25s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-  .mode-btn:hover { color: var(--text); border-color: var(--border); }
-  .mode-btn.active {
-    background: var(--glow);
-    border-color: var(--accent);
-    color: var(--gold);
-    box-shadow: 0 0 16px var(--glow);
-  }
-
-  /* ── SECTION LABELS ── */
-  .section-label {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.22em;
-    color: var(--accent);
-    text-transform: uppercase;
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-
-  /* ── FIELDS ── */
-  .field { 
-    margin-bottom: 20px; 
-    position: relative;
-  }
-
-  .field::after {
-    content: 'Not Required';
-    position: absolute;
-    top: 0;
-    right: 0;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.62rem;
-    color: var(--muted);
-    opacity: 0;
-    transition: all 0.2s ease;
-    pointer-events: none;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    transform: translateY(2px);
-  }
-
-  .field:has(label span)::after,
-  .field.required-field::after {
-    content: 'Required';
-    color: var(--accent);
-  }
-
-  .field:hover::after {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .field label {
-    display: block;
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 7px;
-  }
-  .field label span { color: var(--red); margin-left: 2px; }
-
-  .field input, .field select {
-    width: 100%;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    padding: 11px 14px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.9rem;
-    color: var(--text);
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    appearance: none;
-    color-scheme: dark;
-  }
-  
-  /* Fix for Chrome autofill background */
-  .field input:-webkit-autofill,
-  .field input:-webkit-autofill:hover,
-  .field input:-webkit-autofill:focus {
-    -webkit-text-fill-color: var(--text);
-    -webkit-box-shadow: 0 0 0px 1000px var(--bg) inset;
-    transition: background-color 5000s ease-in-out 0s;
-  }
-  .field input::placeholder { color: var(--muted); opacity: 0.7; }
-  .field input:focus, .field select:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px var(--glow);
-  }
-  .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234a5a7a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
-  .field select option { background: var(--panel); }
-
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  @media(max-width:520px) { .grid-2 { grid-template-columns: 1fr; } }
-
-  /* ── RANK GRID ── */
-  .rank-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    gap: 8px;
-  }
-  .rank-option input[type="radio"] { display: none; }
-  .rank-option label {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    padding: 10px 6px 8px;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    background: var(--bg);
-    cursor: pointer;
-    font-size: 0.72rem;
-    letter-spacing: 0.04em;
-    color: var(--muted);
-    text-transform: uppercase;
-    transition: all 0.2s;
-    text-align: center;
-  }
-  .rank-option label:hover { border-color: var(--accent2); color: var(--text); }
-  .rank-option input[type="radio"]:checked + label {
-    border-color: var(--accent);
-    background: var(--glow);
-    color: var(--gold);
-    box-shadow: 0 0 10px var(--glow);
-  }
-  .rank-icon { width: 44px; height: 44px; object-fit: contain; }
-
-  /* ── POSITION ── */
-  .pos-grid { display: flex; gap: 8px; flex-wrap: wrap; }
-  .pos-option input[type="radio"] { display: none; }
-  .pos-option label {
-    padding: 8px 14px;
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    background: var(--bg);
-    cursor: pointer;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.82rem;
-    color: var(--muted);
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
-  .pos-option label:hover { border-color: var(--accent2); color: var(--text); }
-  .pos-option input[type="radio"]:checked + label {
-    border-color: var(--accent2);
-    background: var(--glow);
-    color: #b39ddb;
-    box-shadow: 0 0 10px var(--glow);
-  }
-
-  /* ── TEAM PLAYERS ── */
-  .player-card {
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 20px;
-    margin-bottom: 14px;
-    background: var(--bg);
-    position: relative;
-    animation: fadeUp 0.3s ease both;
-  }
-  .player-num {
-    font-family: 'Cinzel Decorative', serif;
-    font-size: 0.65rem;
-    color: var(--accent);
-    letter-spacing: 0.15em;
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .player-num .badge {
-    background: linear-gradient(135deg, var(--accent2), var(--accent));
-    color: var(--bg);
-    width: 22px; height: 22px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 700;
-  }
-  .player-num.cap .badge { background: linear-gradient(135deg, var(--accent), #f0d080); }
-
-  /* ── SUBMIT ── */
-  .submit-btn {
-    width: 100%;
-    margin-top: 28px;
-    padding: 16px;
-    background: var(--panel);
-    border: 1px solid var(--accent);
-    border-radius: 4px;
-    color: var(--gold);
-    font-family: 'Cinzel Decorative', serif;
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
-  }
-  .submit-btn::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--accent);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .submit-btn:hover { box-shadow: 0 0 24px var(--glow); transform: translateY(-1px); }
-  .submit-btn:hover::before { opacity: 0.1; }
-  .submit-btn:active { transform: translateY(0); }
-
-  /* ── SUCCESS ── */
-  .success {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 40px 20px;
-    animation: fadeUp 0.5s ease both;
-  }
-  .success-icon { font-size: 3.5rem; margin-bottom: 16px; }
-  .success h2 { font-family: 'Cinzel Decorative', serif; color: var(--gold); font-size: 1.4rem; margin-bottom: 10px; }
-  .success p { color: var(--muted); font-size: 0.9rem; line-height: 1.7; }
-  .success code { font-family: 'Share Tech Mono', monospace; color: var(--accent2); font-size: 0.85rem; }
-
-  /* ── ERROR ── */
-  .error-msg {
-    display: none;
-    color: #e74c3c;
-    font-size: 0.78rem;
-    font-family: 'Share Tech Mono', monospace;
-    margin-top: 5px;
-    letter-spacing: 0.03em;
-  }
-  .field.invalid input, .field.invalid select { border-color: var(--red); }
-  .field.invalid .error-msg { display: block; }
-
-  /* ── ANIMS ── */
-  @keyframes fadeDown { from { opacity:0; transform:translateY(-18px); } to { opacity:1; transform:none; } }
-  @keyframes fadeUp   { from { opacity:0; transform:translateY(18px);  } to { opacity:1; transform:none; } }
-
-  /* ── HIDDEN ── */
-  .team-section { display: none; }
-  .solo-section { display: block; }
-  body.team-mode .team-section { display: block; }
-  body.team-mode .solo-section { display: none; }
-
-  /* ── FOOTER ── */
-  .footer-note {
-    margin-top: 24px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    text-align: center;
-    opacity: 0.6;
-  }
-</style>
-</head>
-<body data-theme="dark">
-
-<!-- THEME TOGGLE -->
-<div class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle Theme">
-  <svg class="moon-icon" viewBox="0 0 24 24"><path d="M12.1,22c-4.9,0-9-4.1-9-9s4.1-9,9-9c0.6,0,1.1,0.1,1.7,0.2c0.3,0.1,0.5,0.4,0.4,0.7c-0.1,0.3-0.4,0.5-0.7,0.4c-0.4-0.1-0.9-0.1-1.3-0.1c-4.3,0-7.8,3.5-7.8,7.8s3.5,7.8,7.8,7.8c3.2,0,6.1-2,7.2-4.9c0.1-0.3,0.4-0.5,0.7-0.4c0.3,0.1,0.5,0.4,0.4,0.7C19.4,19.3,16,22,12.1,22z"/></svg>
-  <svg class="sun-icon" viewBox="0 0 24 24"><path d="M12,18c-3.3,0-6-2.7-6-6s2.7-6,6-6s6,2.7,6,6S15.3,18,12,18z M12,7c-2.8,0-5,2.2-5,5s2.2,5,5,5s5-2.2,5-5S14.8,7,12,7z M12,4c-0.3,0-0.5-0.2-0.5-0.5v-2c0-0.3,0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5v2C12.5,3.8,12.3,4,12,4z M12,24c-0.3,0-0.5-0.2-0.5-0.5v-2c0-0.3,0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5v2C12.5,23.8,12.3,24,12,24z M5.6,6.3c-0.1,0-0.3-0.1-0.4-0.2l-1.4-1.4c-0.2-0.2-0.2-0.5,0-0.7s0.5-0.2,0.7,0l1.4,1.4c0.2,0.2,0.2,0.5,0,0.7C5.9,6.2,5.8,6.3,5.6,6.3z M19.8,20.5c-0.1,0-0.3-0.1-0.4-0.2l-1.4-1.4c-0.2-0.2-0.2-0.5,0-0.7s0.5-0.2,0.7,0l1.4,1.4c0.2,0.2,0.2,0.5,0,0.7C20.1,20.4,20,20.5,19.8,20.5z M4,12.5H2c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5h2c0.3,0,0.5,0.2,0.5,0.5S4.3,12.5,4,12.5z M22,12.5h-2c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5h2c0.3,0,0.5,0.2,0.5,0.5S22.3,12.5,22,12.5z M6.3,18.4l-1.4,1.4c-0.2,0.2-0.5,0.2-0.7,0s-0.2-0.5,0-0.7l1.4-1.4c0.2-0.2,0.5-0.2,0.7,0S6.5,18.2,6.3,18.4z M20.5,4.2l-1.4,1.4c-0.2,0.2-0.5,0.2-0.7,0s-0.2-0.5,0-0.7l1.4-1.4c0.2-0.2,0.5-0.2,0.7,0S20.7,4,20.5,4.2z"/></svg>
-</div>
-
-<!-- HEADER -->
-<div class="header">
-  <div class="logo-emblem">
-    <img src="assets/logo.png" alt="SecretLeague Logo">
-  </div>
-  <h1>SecretLeague</h1>
-  <p class="subtitle">In-House Tournament Registration</p>
-  <div class="divider">
-    <div class="divider-line"></div>
-    <div class="divider-diamond"></div>
-    <div class="divider-line"></div>
-  </div>
-</div>
-
-<!-- NAV BAR -->
-<nav class="nav-bar">
-  <div class="nav-item active" id="nav-tournament" onclick="showPage('tournament')">Tournament Registration</div>
-  <div class="nav-item" id="nav-bortygpt" onclick="showPage('bortygpt')">BortyGPT</div>
-</nav>
-
-<!-- PAGES -->
-<div id="tournament-page" class="page">
-  <!-- CARD -->
-  <div class="card" id="formCard">
-    <div class="card-corner tl"></div>
-    <div class="card-corner tr"></div>
-    <div class="card-corner bl"></div>
-    <div class="card-corner br"></div>
-
-    <!-- SUCCESS STATE -->
-    <div class="success" id="successMsg">
-      <div class="success-icon">⚔️</div>
-      <h2>Registration Received</h2>
-      <p>Your entry has been submitted to <code>SecretLeague</code>.<br>An admin will review and confirm your spot.<br>Good luck, soldier.</p>
-    </div>
-
-    <!-- FORM -->
-    <div id="formContent">
-
-      <!-- MODE TOGGLE -->
-      <div class="mode-toggle">
-        <button class="mode-btn active" id="soloBtn" onclick="setMode('solo')">
-          <span>⚔️</span> Solo Entry
-        </button>
-        <button class="mode-btn" id="teamBtn" onclick="setMode('team')">
-          <span>🛡️</span> Team Entry
-        </button>
-      </div>
-
-      <!-- SOLO SECTION -->
-      <div class="solo-section" id="soloSection">
-        <div class="section-label">Player Info</div>
-
-        <div class="grid-2">
-          <div class="field" id="f-ign">
-            <label>In-Game Name <span>*</span></label>
-            <input type="text" id="ign" placeholder="YourDotaName" autocomplete="off">
-            <div class="error-msg">In-game name is required.</div>
-          </div>
-          <div class="field" id="f-steamName">
-            <label>Steam Display Name <span>*</span></label>
-            <input type="text" id="steamName" placeholder="Steam Name" autocomplete="off" maxlength="32">
-            <div class="error-msg">Steam display name is required.</div>
-          </div>
-        </div>
-
-        <div class="grid-2">
-          <div class="field" id="f-steam">
-            <label>Steam ID / Friend Code <span>*</span></label>
-            <input type="text" id="steamId" placeholder="76561198..." autocomplete="off" maxlength="17" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-            <div class="error-msg">Valid 17-digit Steam ID is required.</div>
-          </div>
-          <div class="field" id="f-discord">
-            <label>Discord Username</label>
-            <input type="text" id="discordUser" placeholder="user#0000" autocomplete="off" maxlength="32">
-          </div>
-        </div>
-
-        <div class="section-label" style="margin-top:8px;">Rank</div>
-        <div class="field required-field">
-          <div class="rank-grid" id="rankGrid-solo">
-            <!-- injected by JS -->
-          </div>
-        </div>
-        <div class="field" id="f-rank-solo" style="margin-top:0; margin-bottom: 0;">
-          <div class="error-msg" id="rankErr-solo">Please select a rank.</div>
-        </div>
-
-        <div class="section-label" style="margin-top:24px;">Primary Position</div>
-        <div class="field required-field">
-          <div class="pos-grid" id="posGrid-solo">
-            <!-- injected by JS -->
-          </div>
-        </div>
-        <div class="field" id="f-pos-solo" style="margin-top:4px;margin-bottom:0">
-          <div class="error-msg" id="posErr-solo">Please select a position.</div>
-        </div>
-      </div>
-
-      <!-- TEAM SECTION -->
-      <div class="team-section" id="teamSection">
-        <div class="section-label">Team Info</div>
-
-        <div class="field" id="f-teamname">
-          <label>Team Name <span>*</span></label>
-          <input type="text" id="teamName" placeholder="Team Enigma" autocomplete="off">
-          <div class="error-msg">Team name is required.</div>
-        </div>
-
-        <div id="playersContainer">
-          <!-- players injected by JS -->
-        </div>
-      </div>
-
-      <button class="submit-btn" onclick="handleSubmit()">⚔ Submit Entry ⚔</button>
-    </div>
-  </div>
-</div>
-
-<div id="bortygpt-page" class="page" style="display: none;">
-  <div class="card">
-    <div class="card-corner tl"></div>
-    <div class="card-corner tr"></div>
-    <div class="card-corner bl"></div>
-    <div class="card-corner br"></div>
-    
-    <div class="wip-container">
-      <div class="wip-title">BortyGPT</div>
-      <div class="wip-text">// Work in Progress //</div>
-      <div class="divider" style="margin-top: 30px;">
-        <div class="divider-line"></div>
-        <div class="divider-diamond"></div>
-        <div class="divider-line"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<p class="footer-note">// SecretLeague · In-House Tournament · Discord Submissions Only //</p>
-
-<script>
-const RANKS = [
-  { icon:'assets/ranks/herald.png', label:'Herald' },
-  { icon:'assets/ranks/guardian.png', label:'Guardian' },
-  { icon:'assets/ranks/crusader.png', label:'Crusader' },
-  { icon:'assets/ranks/archon.png', label:'Archon' },
-  { icon:'assets/ranks/legend.png', label:'Legend' },
-  { icon:'assets/ranks/ancient.png', label:'Ancient' },
-  { icon:'assets/ranks/divine.png', label:'Divine' },
-  { icon:'assets/ranks/immortal.png', label:'Immortal' },
-];
-
-const POSITIONS = [
-  { val:'1', label:'Pos 1 — Carry' },
-  { val:'2', label:'Pos 2 — Mid' },
-  { val:'3', label:'Pos 3 — Offlane' },
-  { val:'4', label:'Pos 4 — Soft Support' },
-  { val:'5', label:'Pos 5 — Hard Support' },
-];
-
-function buildRankGrid(containerId, prefix) {
-  const el = document.getElementById(containerId);
-  el.innerHTML = RANKS.map((r,i) => `
-    <div class="rank-option">
-      <input type="radio" name="rank-${prefix}" id="rank-${prefix}-${i}" value="${r.label}">
-      <label for="rank-${prefix}-${i}">
-        <img src="${r.icon}" class="rank-icon" alt="${r.label}">
-        ${r.label}
-      </label>
-    </div>`).join('');
-}
-
-function buildPosGrid(containerId, prefix) {
-  const el = document.getElementById(containerId);
-  el.innerHTML = POSITIONS.map(p => `
-    <div class="pos-option">
-      <input type="radio" name="pos-${prefix}" id="pos-${prefix}-${p.val}" value="${p.val}">
-      <label for="pos-${prefix}-${p.val}">${p.label}</label>
-    </div>`).join('');
-}
-
-function buildPlayerCards() {
-  const c = document.getElementById('playersContainer');
-  c.innerHTML = '';
-  for (let i = 1; i <= 5; i++) {
-    const isCap = i === 1;
-    c.innerHTML += `
-    <div class="player-card">
-      <div class="player-num ${isCap?'cap':''}">
-        <div class="badge">${i}</div>
-        PLAYER ${i}${isCap?' — CAPTAIN':''}
-      </div>
-      <div class="grid-2">
-        <div class="field" id="f-p${i}-ign">
-          <label>In-Game Name <span>*</span></label>
-          <input type="text" id="p${i}-ign" placeholder="DotaName" autocomplete="off">
-          <div class="error-msg">Required.</div>
-        </div>
-        <div class="field" id="f-p${i}-steamName">
-          <label>Steam Display Name <span>*</span></label>
-          <input type="text" id="p${i}-steamName" placeholder="Steam Name" autocomplete="off" maxlength="32">
-          <div class="error-msg">Required.</div>
-        </div>
-      </div>
-      <div class="grid-2">
-        <div class="field" id="f-p${i}-steam">
-          <label>Steam ID / Friend Code ${isCap?'<span>*</span>':''}</label>
-          <input type="text" id="p${i}-steam" placeholder="76561198..." autocomplete="off" maxlength="17" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-          <div class="error-msg">Valid 17-digit Steam ID required.</div>
-        </div>
-        <div class="field" id="f-p${i}-discord">
-          <label>Discord Username ${isCap?'':'(Optional)'}</label>
-          <input type="text" id="p${i}-discord" placeholder="user#0000" autocomplete="off" maxlength="32">
-        </div>
-      </div>
-      <div class="section-label" style="margin-top:4px;font-size:0.62rem;">Rank</div>
-      <div class="field required-field">
-        <div class="rank-grid" id="rankGrid-p${i}"></div>
-      </div>
-      <div class="field" id="f-rank-p${i}" style="margin-top:0; margin-bottom: 0;">
-        <div class="error-msg" id="rankErr-p${i}">Please select a rank.</div>
-      </div>
-      <div class="section-label" style="margin-top:18px;font-size:0.62rem;">Position</div>
-      <div class="field required-field">
-        <div class="pos-grid" id="posGrid-p${i}"></div>
-      </div>
-      <div class="field" id="f-pos-p${i}" style="margin-top:4px;margin-bottom:0">
-        <div class="error-msg" id="posErr-p${i}">Please select a position.</div>
-      </div>
-    </div>`;
-  }
-
-  for (let i = 1; i <= 5; i++) {
-    buildRankGrid(`rankGrid-p${i}`, `p${i}`);
-    buildPosGrid(`posGrid-p${i}`, `p${i}`);
-  }
-}
-
-// INIT
-buildRankGrid('rankGrid-solo', 'solo');
-buildPosGrid('posGrid-solo', 'solo');
-buildPlayerCards();
-
-let currentMode = 'solo';
-
-function setMode(mode) {
-  currentMode = mode;
-  document.body.classList.toggle('team-mode', mode === 'team');
-  document.getElementById('soloBtn').classList.toggle('active', mode === 'solo');
-  document.getElementById('teamBtn').classList.toggle('active', mode === 'team');
-}
-
-function showPage(pageId) {
-  // Hide all pages
-  document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-  // Show target page
-  document.getElementById(pageId + '-page').style.display = 'block';
-  
-  // Update nav items
-  document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-  document.getElementById('nav-' + pageId).classList.add('active');
-}
-
-// Theme Management
-function toggleTheme() {
-  const body = document.body;
-  const currentTheme = body.getAttribute('data-theme');
-  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-  
-  body.setAttribute('data-theme', newTheme);
-  document.documentElement.setAttribute('data-theme', newTheme);
-  localStorage.setItem('theme', newTheme);
-}
-
-function initTheme() {
-  const savedTheme = localStorage.getItem('theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
-  
-  document.body.setAttribute('data-theme', initialTheme);
-  document.documentElement.setAttribute('data-theme', initialTheme);
-}
-
-// Initialize default page and theme
-document.addEventListener('DOMContentLoaded', () => {
-  initTheme();
-  showPage('tournament');
-});
-
-function setInvalid(fieldId, invalid) {
-  document.getElementById(fieldId)?.classList.toggle('invalid', invalid);
-}
-
-function getRankVal(prefix) {
-  const sel = document.querySelector(`input[name="rank-${prefix}"]:checked`);
-  return sel ? sel.value : '';
-}
-
-function getPosVal(prefix) {
-  const sel = document.querySelector(`input[name="pos-${prefix}"]:checked`);
-  return sel ? sel.value : '';
-}
-
-async function handleSubmit() {
-  let ok = true;
-
-  if (currentMode === 'solo') {
-    const ign = document.getElementById('ign').value.trim();
-    const steamName = document.getElementById('steamName').value.trim();
-    const steam = document.getElementById('steamId').value.trim();
-    const rank = getRankVal('solo');
-    const pos = getPosVal('solo');
-
-    setInvalid('f-ign', !ign); if (!ign) ok = false;
-    setInvalid('f-steamName', !steamName); if (!steamName) ok = false;
-    
-    const steamValid = steam.length === 17;
-    setInvalid('f-steam', !steamValid); if (!steamValid) ok = false;
-
-    const rankErr = document.getElementById('rankErr-solo');
-    const noRank = !rank;
-    rankErr.style.display = noRank ? 'block' : 'none';
-    if (noRank) ok = false;
-
-    const posErr = document.getElementById('posErr-solo');
-    const noPos = !pos;
-    posErr.style.display = noPos ? 'block' : 'none';
-    if (noPos) ok = false;
-
-  } else {
-    const tname = document.getElementById('teamName').value.trim();
-    setInvalid('f-teamname', !tname); if (!tname) ok = false;
-
-    for (let i = 1; i <= 5; i++) {
-      const ign = document.getElementById(`p${i}-ign`).value.trim();
-      const steamName = document.getElementById(`p${i}-steamName`).value.trim();
-      const steam = document.getElementById(`p${i}-steam`).value.trim();
-      const rank = getRankVal(`p${i}`);
-      const pos = getPosVal(`p${i}`);
-
-      setInvalid(`f-p${i}-ign`, !ign); if (!ign) ok = false;
-      setInvalid(`f-p${i}-steamName`, !steamName); if (!steamName) ok = false;
-
-      // Steam ID is required only for Captain (Player 1)
-      if (i === 1) {
-        const steamValid = steam.length === 17;
-        setInvalid(`f-p${i}-steam`, !steamValid); if (!steamValid) ok = false;
-      } else if (steam.length > 0) {
-        // If they provided a steam ID, it must be 17 digits
-        const steamValid = steam.length === 17;
-        setInvalid(`f-p${i}-steam`, !steamValid); if (!steamValid) ok = false;
-      } else {
-        setInvalid(`f-p${i}-steam`, false);
-      }
-
-      const rankErr = document.getElementById(`rankErr-p${i}`);
-      rankErr.style.display = !rank ? 'block' : 'none';
-      if (!rank) ok = false;
-
-      const posErr = document.getElementById(`posErr-p${i}`);
-      posErr.style.display = !pos ? 'block' : 'none';
-      if (!pos) ok = false;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <title>SecretLeague — Tournament Registration</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #06080f;
+      --panel: #0b0f1c;
+      --border: #1a2a4a;
+      --accent: #c89b3c;
+      --accent2: #7b5ea7;
+      --gold: #e8c46a;
+      --red: #c0392b;
+      --text: #c9d4e8;
+      --muted: #4a5a7a;
+      --glow: #1a1c23;
+      --silver: #cbd5e1;
+      --silver-glow: rgba(203, 213, 225, 0.2);
+      --secondary-glow: #0f172a;
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-  }
 
-  if (!ok) return;
+    [data-theme="light"] {
+      color-scheme: light;
+      --bg: #f4f6f9;
+      --panel: #ffffff;
+      --border: #d8dee9;
+      --accent: #b08d48;
+      --accent2: #7b5ea7;
+      --gold: #9a7d3a;
+      --red: #c0392b;
+      --text: #2e3440;
+      --muted: #4c566a;
+      --glow: #e5e9f0;
+      --silver: #4c566a;
+      --silver-glow: rgba(76, 86, 106, 0.1);
+      --secondary-glow: #e5e9f0;
+    }
 
-  // ── CONFIG ──────────────────────────────────────────────
-  const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1495881873140879361/Zff09vcmsBRf9f18XQ7Yh0hrdoCqORI-yCF8B2xI9WRxOq17GE-E2nZXjlfkzK0SH98K';
-  const SHEETS_WEBHOOK  = 'https://script.google.com/macros/s/AKfycbxY0KeVL6mUV3tWUEKmMObxdmMlh9I9nJ_Z1seGTHLymuloA2NpnXRy6U3srGYkiS1vkw/exec';
-  // ────────────────────────────────────────────────────────
+    *, *::before, *::after { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      transition: background-color var(--transition), border-color var(--transition), color var(--transition), box-shadow var(--transition);
+    }
 
-  const btn = document.querySelector('.submit-btn');
-  btn.disabled = true;
-  btn.textContent = 'Submitting...';
+    body {
+      background-color: var(--bg);
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231a2a4a' fill-opacity='0.3'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      font-family: 'Rajdhani', sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 16px 60px;
+      overflow-x: hidden;
+    }
 
-  let payload, sheetsRow;
-  const ts = new Date().toISOString();
+    [data-theme="light"] body {
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d1d9e6' fill-opacity='0.6'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
 
-  if (currentMode === 'solo') {
-    const ign       = document.getElementById('ign').value.trim();
-    const steamName = document.getElementById('steamName').value.trim();
-    const steam     = document.getElementById('steamId').value.trim();
-    const discord   = document.getElementById('discordUser').value.trim();
-    const rank      = getRankVal('solo');
-    const pos       = getPosVal('solo');
-    const posLabel  = POSITIONS.find(p => p.val === pos)?.label ?? pos;
+    /* ── THEME TOGGLE ── */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1000;
+      transition: all var(--transition);
+      color: var(--gold);
+      box-shadow: 0 4px 12px var(--glow);
+    }
+    .theme-toggle:hover { border-color: var(--accent); transform: rotate(15deg); box-shadow: 0 0 15px var(--glow); }
+    .theme-toggle svg { width: 22px; height: 22px; fill: currentColor; }
+    [data-theme="light"] .sun-icon { display: block; }
+    [data-theme="light"] .moon-icon { display: none; }
+    .sun-icon { display: none; }
+    .moon-icon { display: block; }
 
-    payload = {
-      username: 'SecretLeague',
-      avatar_url: 'https://i.imgur.com/AfFp7pu.png',
-      embeds: [{
-        title: '⚔️ New Solo Registration',
-        color: 0xC89B3C,
-        fields: [
-          { name: 'IGN',          value: ign,           inline: true  },
-          { name: 'Steam Name',   value: steamName,     inline: true  },
-          { name: 'Steam ID',     value: steam,         inline: true  },
-          { name: 'Discord',      value: discord || '—', inline: true },
-          { name: 'Rank',         value: rank,          inline: true  },
-          { name: 'Position',     value: posLabel,      inline: true  },
-        ],
-        footer: { text: `SecretLeague · ${ts}` },
-        thumbnail: { url: 'https://i.imgur.com/AfFp7pu.png' }
-      }]
-    };
+    /* ── HEADER ── */
+    .header { text-align: center; margin-bottom: 24px; animation: fadeDown 0.7s ease both; }
+    @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .logo-emblem { width: 120px; height: 120px; margin: 0 auto 16px; position: relative; }
+    .logo-emblem img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 0 10px var(--glow)); }
 
-    sheetsRow = { type: 'solo', timestamp: ts, ign, steamName, steam, discord, rank, position: posLabel };
+    h1 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: clamp(2.2rem, 6vw, 3.2rem);
+      font-weight: 700;
+      color: var(--silver);
+      text-shadow: 0 0 15px var(--silver-glow), 0 0 30px var(--secondary-glow);
+      letter-spacing: 0.05em;
+      line-height: 1.1;
+      text-transform: none;
+    }
 
-  } else {
-    const teamName = document.getElementById('teamName').value.trim();
-    const players = [];
-    const fields  = [{ name: 'Team', value: teamName, inline: false }];
+    .subtitle {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--muted);
+      font-size: 0.78rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
 
-    for (let i = 1; i <= 5; i++) {
-      const ign       = document.getElementById(`p${i}-ign`).value.trim();
-      const steamName = document.getElementById(`p${i}-steamName`).value.trim();
-      const steam     = document.getElementById(`p${i}-steam`).value.trim();
-      const discord   = document.getElementById(`p${i}-discord`).value.trim();
-      const rank      = getRankVal(`p${i}`);
-      const pos       = getPosVal(`p${i}`);
-      const posLabel  = POSITIONS.find(p => p.val === pos)?.label ?? pos;
-      players.push({ ign, steamName, steam, discord, rank, position: posLabel });
-      fields.push({
-        name: `Player ${i}${i===1?' (Captain)':''}`,
-        value: `**${ign}** (${steamName})\nID: ${steam || '—'}\nDiscord: ${discord || '—'}\n${rank} · ${posLabel}`,
-        inline: true
+    .divider { display: flex; align-items: center; gap: 12px; margin: 18px auto 0; width: 320px; }
+    .divider-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
+    .divider-diamond { width: 8px; height: 8px; background: var(--accent); transform: rotate(45deg); box-shadow: 0 0 8px var(--accent); }
+
+    /* ── NAV BAR ── */
+    .nav-bar {
+      display: flex; gap: 20px; margin-bottom: 32px; background: var(--panel);
+      padding: 10px 20px; border-radius: 8px; border: 1px solid var(--border);
+      animation: fadeDown 0.7s ease both;
+      box-shadow: 0 4px 15px var(--glow);
+    }
+    .nav-item {
+      font-family: 'Share Tech Mono', monospace; font-size: 0.9rem; color: var(--muted);
+      text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em;
+      cursor: pointer; transition: all 0.3s ease; padding: 8px 16px; border-radius: 4px;
+      border: 1px solid transparent;
+    }
+    .nav-item:hover { color: var(--gold); border-color: var(--border); background: var(--glow); }
+    .nav-item.active { color: var(--gold); border-color: var(--accent); background: var(--glow); box-shadow: inset 0 0 8px var(--glow); }
+
+    /* ── CARD ── */
+    .page { width: 100%; display: flex; justify-content: center; }
+    .card {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 4px;
+      width: 100%; max-width: 680px; padding: 36px 40px; position: relative; overflow: hidden;
+      animation: fadeUp 0.6s ease both;
+      box-shadow: 0 10px 40px var(--glow);
+    }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent 0%, var(--accent2) 20%, var(--accent) 50%, var(--accent2) 80%, transparent 100%);
+    }
+
+    .card-corner { position: absolute; width: 20px; height: 20px; border-color: var(--accent); border-style: solid; opacity: 0.4; }
+    .card-corner.tl { top: 8px; left: 8px; border-width: 1px 0 0 1px; }
+    .card-corner.tr { top: 8px; right: 8px; border-width: 1px 1px 0 0; }
+    .card-corner.bl { bottom: 8px; left: 8px; border-width: 0 0 1px 1px; }
+    .card-corner.br { bottom: 8px; right: 8px; border-width: 0 1px 1px 0; }
+
+    /* ── FORM ── */
+    .mode-toggle { display: grid; grid-template-columns: 1fr 1fr; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 4px; margin-bottom: 32px; gap: 4px; }
+    .mode-btn { padding: 12px; font-family: 'Rajdhani', sans-serif; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; border: 1px solid transparent; border-radius: 3px; background: transparent; color: var(--muted); cursor: pointer; transition: all 0.25s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .mode-btn:hover { color: var(--text); border-color: var(--border); }
+    .mode-btn.active { background: var(--glow); border-color: var(--accent); color: var(--gold); box-shadow: 0 0 16px var(--glow); }
+
+    .section-label { font-family: 'Share Tech Mono', monospace; font-size: 0.68rem; letter-spacing: 0.22em; color: var(--accent); text-transform: uppercase; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    .field { margin-bottom: 24px; position: relative; }
+    .field::after {
+      content: 'Not Required'; position: absolute; top: -14px; right: 0; font-family: 'Share Tech Mono', monospace;
+      font-size: 0.58rem; color: var(--muted); opacity: 0; transition: all 0.2s ease;
+      pointer-events: none; text-transform: uppercase; letter-spacing: 0.1em; transform: translateY(4px);
+    }
+    .field:has(label span)::after, .field.required-field::after { content: 'Required'; color: var(--accent); }
+    .field:hover::after { opacity: 1; transform: translateY(0); }
+
+    .field label { display: block; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; color: var(--muted); text-transform: uppercase; margin-bottom: 7px; }
+    .field label span { color: var(--red); margin-left: 2px; }
+
+    .field input {
+      width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 3px;
+      padding: 12px 14px; font-family: 'Share Tech Mono', monospace; font-size: 0.95rem; color: var(--text);
+      outline: none; transition: border-color 0.2s, box-shadow 0.2s; appearance: none; color-scheme: dark;
+    }
+    .field input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--glow); }
+    .field input::placeholder { color: var(--muted); opacity: 0.5; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media(max-width:520px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    /* ── RANK GRID ── */
+    .rank-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); gap: 8px; }
+    .rank-option input[type="radio"] { display: none; }
+    .rank-option label {
+      display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 6px 10px;
+      border: 1px solid var(--border); border-radius: 4px; background: var(--bg); cursor: pointer;
+      font-size: 0.7rem; color: var(--muted); transition: all 0.2s; text-align: center;
+      font-weight: 600;
+    }
+    .rank-option label:hover { border-color: var(--accent2); color: var(--text); }
+    .rank-option input[type="radio"]:checked + label { border-color: var(--accent); background: var(--glow); color: var(--gold); box-shadow: 0 0 15px var(--glow); }
+    .rank-icon { width: 48px; height: 48px; object-fit: contain; filter: drop-shadow(0 0 5px rgba(0,0,0,0.3)); }
+
+    /* ── POSITION ── */
+    .pos-grid { display: flex; gap: 8px; flex-wrap: wrap; }
+    .pos-option input[type="radio"] { display: none; }
+    .pos-option label { padding: 10px 16px; border: 1px solid var(--border); border-radius: 3px; background: var(--bg); cursor: pointer; font-family: 'Share Tech Mono', monospace; font-size: 0.85rem; color: var(--muted); transition: all 0.2s; font-weight: 600; }
+    .pos-option label:hover { border-color: var(--accent2); color: var(--text); }
+    .pos-option input[type="radio"]:checked + label { border-color: var(--accent2); background: var(--glow); color: #b39ddb; box-shadow: 0 0 12px var(--glow); }
+
+    /* ── TEAM PLAYERS ── */
+    .player-card { border: 1px solid var(--border); border-radius: 4px; padding: 24px; margin-bottom: 20px; background: var(--bg); position: relative; box-shadow: inset 0 0 20px rgba(0,0,0,0.2); }
+    .player-num { font-family: 'Cinzel Decorative', serif; font-size: 0.65rem; color: var(--accent); letter-spacing: 0.15em; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+    .player-num .badge { background: linear-gradient(135deg, var(--accent2), var(--accent)); color: #000; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Rajdhani', sans-serif; font-size: 0.85rem; font-weight: 700; }
+    .player-num.cap .badge { background: linear-gradient(135deg, var(--accent), #f0d080); }
+
+    /* ── SUBMIT ── */
+    .submit-btn {
+      width: 100%; margin-top: 32px; padding: 18px; background: var(--panel); border: 1px solid var(--accent);
+      border-radius: 4px; color: var(--gold); font-family: 'Cinzel Decorative', serif; font-size: 1.1rem;
+      font-weight: 700; letter-spacing: 0.15em; cursor: pointer; position: relative; overflow: hidden; transition: all 0.3s ease;
+      text-transform: uppercase;
+    }
+    .submit-btn:hover { box-shadow: 0 0 30px var(--glow); transform: translateY(-2px); background: var(--glow); }
+    .submit-btn:active { transform: translateY(0); }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ── SUCCESS ── */
+    .success { display: none; flex-direction: column; align-items: center; text-align: center; padding: 60px 20px; }
+    .success-icon { font-size: 4rem; margin-bottom: 20px; filter: drop-shadow(0 0 15px var(--gold)); }
+    .success h2 { font-family: 'Cinzel Decorative', serif; color: var(--gold); font-size: 1.8rem; margin-bottom: 12px; }
+    .success p { color: var(--muted); font-size: 1rem; line-height: 1.7; max-width: 400px; }
+
+    /* ── ERROR ── */
+    .error-msg { display: none; color: var(--red); font-size: 0.72rem; font-family: 'Share Tech Mono', monospace; margin-top: 6px; font-weight: 600; text-transform: uppercase; }
+    .field.invalid input { border-color: var(--red); box-shadow: 0 0 10px rgba(192, 57, 43, 0.2); }
+    .field.invalid .error-msg { display: block; animation: shake 0.4s ease; }
+    @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+
+    /* ── BORTYGPT ── */
+    .wip-container { text-align: center; padding: 80px 20px; }
+    .wip-title { font-family: 'Cinzel Decorative', serif; font-size: 2.5rem; color: var(--gold); margin-bottom: 24px; text-shadow: 0 0 20px var(--glow); }
+    .wip-text { font-family: 'Share Tech Mono', monospace; color: var(--muted); font-size: 1.1rem; margin-bottom: 40px; letter-spacing: 0.1em; }
+    .pokemon-btn {
+      display: inline-flex; align-items: center; gap: 12px; padding: 14px 32px;
+      background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+      border: 3px solid #ffffff; border-radius: 50px; color: #ffffff;
+      font-family: 'Rajdhani', sans-serif; font-size: 1.2rem; font-weight: 700;
+      text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em;
+      box-shadow: 0 6px 20px rgba(255, 0, 0, 0.4); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .pokemon-btn:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 10px 30px rgba(255, 0, 0, 0.6); }
+    .pokemon-btn span { font-size: 1.4rem; }
+
+    .footer-note { margin-top: 40px; font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; color: var(--muted); opacity: 0.5; text-align: center; letter-spacing: 0.1em; }
+
+    /* ── HIDDEN SECTIONS ── */
+    .team-section { display: none; }
+    body.team-mode .team-section { display: block; }
+    body.team-mode .solo-section { display: none; }
+  </style>
+</head>
+<body onload="init()">
+
+  <div class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+    <svg class="moon-icon" viewBox="0 0 24 24"><path d="M12.1,22c-4.9,0-9-4.1-9-9s4.1-9,9-9c0.6,0,1.1,0.1,1.7,0.2c0.3,0.1,0.5,0.4,0.4,0.7c-0.1,0.3-0.4,0.5-0.7,0.4c-0.4-0.1-0.9-0.1-1.3-0.1c-4.3,0-7.8,3.5-7.8,7.8s3.5,7.8,7.8,7.8c3.2,0,6.1-2,7.2-4.9c0.1-0.3,0.4-0.5,0.7-0.4c0.3,0.1,0.5,0.4,0.4,0.7C19.4,19.3,16,22,12.1,22z"/></svg>
+    <svg class="sun-icon" viewBox="0 0 24 24"><path d="M12,18c-3.3,0-6-2.7-6-6s2.7-6,6-6s6,2.7,6,6S15.3,18,12,18z M12,7c-2.8,0-5,2.2-5,5s2.2,5,5,5s5-2.2,5-5S14.8,7,12,7z M12,4c-0.3,0-0.5-0.2-0.5-0.5v-2c0-0.3,0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5v2C12.5,3.8,12.3,4,12,4z M12,24c-0.3,0-0.5-0.2-0.5-0.5v-2c0-0.3,0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5v2C12.5,23.8,12.3,24,12,24z M5.6,6.3c-0.1,0-0.3-0.1-0.4-0.2l-1.4-1.4c-0.2-0.2-0.2-0.5,0-0.7s0.5-0.2,0.7,0l1.4,1.4c0.2,0.2,0.2,0.5,0,0.7C5.9,6.2,5.8,6.3,5.6,6.3z M19.8,20.5c-0.1,0-0.3-0.1-0.4-0.2l-1.4-1.4c-0.2-0.2-0.2-0.5,0-0.7s0.5-0.2,0.7,0l1.4,1.4c0.2,0.2,0.2,0.5,0,0.7C20.1,20.4,20,20.5,19.8,20.5z M4,12.5H2c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5h2c0.3,0,0.5,0.2,0.5,0.5S4.3,12.5,4,12.5z M22,12.5h-2c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5h2c0.3,0,0.5,0.2,0.5,0.5S22.3,12.5,22,12.5z M6.3,18.4l-1.4,1.4c-0.2,0.2-0.5,0.2-0.7,0s-0.2-0.5,0-0.7l1.4-1.4c0.2-0.2,0.5-0.2,0.7,0S6.5,18.2,6.3,18.4z M20.5,4.2l-1.4,1.4c-0.2,0.2-0.5,0.2-0.7,0s-0.2-0.5,0-0.7l1.4-1.4c0.2-0.2,0.5-0.2,0.7,0S20.7,4,20.5,4.2z"/></svg>
+  </div>
+
+  <div class="header">
+    <div class="logo-emblem"><img src="assets/logo.png" alt="Logo"></div>
+    <h1>SecretLeague</h1>
+    <p class="subtitle">In-House Tournament Registration</p>
+    <div class="divider"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+  </div>
+
+  <nav class="nav-bar">
+    <div class="nav-item active" id="nav-tournament" onclick="showPage('tournament')">Tournament Registration</div>
+    <div class="nav-item" id="nav-bortygpt" onclick="showPage('bortygpt')">BortyGPT</div>
+  </nav>
+
+  <div id="tournament-page" class="page">
+    <div class="card" id="formCard">
+      <div class="card-corner tl"></div><div class="card-corner tr"></div>
+      <div class="card-corner bl"></div><div class="card-corner br"></div>
+
+      <div class="success" id="successMsg">
+        <div class="success-icon">⚔️</div>
+        <h2>Registration Received</h2>
+        <p>Your entry has been submitted to <code>SecretLeague</code>. Check Discord for confirmation.</p>
+      </div>
+
+      <div id="formContent">
+        <div class="mode-toggle">
+          <button class="mode-btn active" id="soloBtn" onclick="setMode('solo')"><span>⚔️</span> Solo Entry</button>
+          <button class="mode-btn" id="teamBtn" onclick="setMode('team')"><span>🛡️</span> Team Entry</button>
+        </div>
+
+        <!-- SOLO SECTION -->
+        <div class="solo-section" id="soloSection">
+          <div class="section-label">Player Info</div>
+          <div class="grid-2">
+            <div class="field" id="f-ign"><label>In-Game Name <span>*</span></label><input type="text" id="ign" placeholder="e.g. Borty" oninput="validateField('ign')"><div class="error-msg">Required</div></div>
+            <div class="field" id="f-steamName"><label>Steam Display Name <span>*</span></label><input type="text" id="steamName" maxlength="32" oninput="validateField('steamName')"><div class="error-msg">Required (Max 32)</div></div>
+          </div>
+          <div class="grid-2">
+            <div class="field" id="f-steamId"><label>Steam ID (17 digits) <span>*</span></label><input type="text" id="steamId" maxlength="17" oninput="this.value=this.value.replace(/\D/g,''); validateField('steamId')" placeholder="76561198..."><div class="error-msg">Exactly 17 digits required</div></div>
+            <div class="field" id="f-discordUser"><label>Discord Username</label><input type="text" id="discordUser" maxlength="32" oninput="validateField('discordUser')" placeholder="username#0000"></div>
+          </div>
+          
+          <div class="section-label">Rank</div>
+          <div class="field required-field">
+            <div class="rank-grid" id="rankGrid-solo"></div>
+            <div class="error-msg" id="rankErr-solo" style="margin-top:10px">Please select your current rank</div>
+          </div>
+
+          <div class="section-label">Primary Position</div>
+          <div class="field required-field">
+            <div class="pos-grid" id="posGrid-solo"></div>
+            <div class="error-msg" id="posErr-solo" style="margin-top:10px">Please select your preferred position</div>
+          </div>
+        </div>
+
+        <!-- TEAM SECTION -->
+        <div class="team-section" id="teamSection">
+          <div class="section-label">Team Info</div>
+          <div class="field" id="f-teamName"><label>Team Name <span>*</span></label><input type="text" id="teamName" oninput="validateField('teamName')"><div class="error-msg">Required</div></div>
+          <div id="playersContainer"></div>
+        </div>
+
+        <button class="submit-btn" id="submitBtn" onclick="handleSubmit()">⚔ Submit Entry ⚔</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BORTYGPT PAGE -->
+  <div id="bortygpt-page" class="page" style="display: none;">
+    <div class="card">
+      <div class="card-corner tl"></div><div class="card-corner tr"></div>
+      <div class="card-corner bl"></div><div class="card-corner br"></div>
+      <div class="wip-container">
+        <div class="wip-title">BortyGPT</div>
+        <div class="wip-text">// System Integration Pending //</div>
+        <div class="divider" style="margin-top: 40px;"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer-note">// SecretLeague · In-House Tournament · Professional Registration Portal //</footer>
+
+  <script>
+    const RANKS = [
+      { icon:'assets/ranks/herald.png', label:'Herald' },
+      { icon:'assets/ranks/guardian.png', label:'Guardian' },
+      { icon:'assets/ranks/crusader.png', label:'Crusader' },
+      { icon:'assets/ranks/archon.png', label:'Archon' },
+      { icon:'assets/ranks/legend.png', label:'Legend' },
+      { icon:'assets/ranks/ancient.png', label:'Ancient' },
+      { icon:'assets/ranks/divine.png', label:'Divine' },
+      { icon:'assets/ranks/immortal.png', label:'Immortal' },
+    ];
+
+    const POSITIONS = [
+      { val:'1', label:'Pos 1' },
+      { val:'2', label:'Pos 2' },
+      { val:'3', label:'Pos 3' },
+      { val:'4', label:'Pos 4' },
+      { val:'5', label:'Pos 5' },
+    ];
+
+    let currentMode = 'solo';
+
+    function init() {
+      initTheme();
+      buildRankGrid('rankGrid-solo', 'solo');
+      buildPosGrid('posGrid-solo', 'solo');
+      buildPlayerCards();
+      loadDraft();
+      showPage('tournament');
+      
+      // Auto-save on any input change
+      document.addEventListener('input', () => {
+        saveDraft();
+      });
+      document.addEventListener('change', (e) => {
+        if (e.target.type === 'radio') saveDraft();
       });
     }
 
-    payload = {
-      username: 'SecretLeague',
-      avatar_url: 'https://i.imgur.com/AfFp7pu.png',
-      embeds: [{
-        title: `🛡️ New Team Registration — ${teamName}`,
-        color: 0x7B5EA7,
-        fields,
-        footer: { text: `SecretLeague · ${ts}` }
-      }]
-    };
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      document.body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
 
-    sheetsRow = { type: 'team', timestamp: ts, teamName, players };
-  }
+    function initTheme() {
+      const saved = localStorage.getItem('theme');
+      const theme = saved || 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+      document.body.setAttribute('data-theme', theme);
+    }
 
-  try {
-    const results = await Promise.allSettled([
-      fetch(DISCORD_WEBHOOK, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      }),
-      fetch(SHEETS_WEBHOOK, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(sheetsRow)
-      })
-    ]);
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+      document.getElementById(id + '-page').style.display = 'flex';
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.getElementById('nav-' + id).classList.add('active');
+    }
 
-    const discordOk = results[0].status === 'fulfilled' && results[0].value.ok;
-    const sheetsOk  = results[1].status === 'fulfilled' && results[1].value.ok;
+    function setMode(m) {
+      currentMode = m;
+      document.body.classList.toggle('team-mode', m === 'team');
+      document.getElementById('soloBtn').classList.toggle('active', m === 'solo');
+      document.getElementById('teamBtn').classList.toggle('active', m === 'team');
+      saveDraft();
+    }
 
-    if (!discordOk && !sheetsOk) throw new Error('Both endpoints failed');
+    function buildRankGrid(cid, prefix) {
+      const el = document.getElementById(cid);
+      el.innerHTML = RANKS.map((r,i) => `
+        <div class="rank-option">
+          <input type="radio" name="rank-${prefix}" id="rank-${prefix}-${i}" value="${r.label}">
+          <label for="rank-${prefix}-${i}"><img src="${r.icon}" class="rank-icon" alt="">${r.label}</label>
+        </div>`).join('');
+    }
 
-    document.getElementById('formContent').style.display = 'none';
-    document.getElementById('successMsg').style.display = 'flex';
+    function buildPosGrid(cid, prefix) {
+      const el = document.getElementById(cid);
+      el.innerHTML = POSITIONS.map((p,i) => `
+        <div class="pos-option">
+          <input type="radio" name="pos-${prefix}" id="pos-${prefix}-${i}" value="${p.val}">
+          <label for="pos-${prefix}-${i}">${p.label}</label>
+        </div>`).join('');
+    }
 
-  } catch (err) {
-    btn.disabled = false;
-    btn.textContent = '⚔ Submit Entry ⚔';
-    alert('Submission failed. Please try again or contact an admin.');
-    console.error(err);
-  }
-}
-</script>
+    function buildPlayerCards() {
+      const c = document.getElementById('playersContainer');
+      c.innerHTML = '';
+      for (let i = 1; i <= 5; i++) {
+        const isCap = i === 1;
+        c.innerHTML += `
+        <div class="player-card">
+          <div class="player-num ${isCap?'cap':''}">
+            <div class="badge">${i}</div> PLAYER ${i}${isCap?' — CAPTAIN':''}
+          </div>
+          <div class="grid-2">
+            <div class="field" id="f-p${i}-ign"><label>IGN <span>*</span></label><input type="text" id="p${i}-ign" oninput="validateField('p${i}-ign')"><div class="error-msg">Required</div></div>
+            <div class="field" id="f-p${i}-steamName"><label>Steam Name <span>*</span></label><input type="text" id="p${i}-steamName" maxlength="32" oninput="validateField('p${i}-steamName')"><div class="error-msg">Required</div></div>
+          </div>
+          <div class="grid-2">
+            <div class="field" id="f-p${i}-steam"><label>Steam ID ${isCap?'<span>*</span>':''}</label><input type="text" id="p${i}-steam" maxlength="17" oninput="this.value=this.value.replace(/\\D/g,''); validateField('p${i}-steam')" placeholder="17 digits"></div>
+            <div class="field" id="f-p${i}-discord"><label>Discord ${isCap?'':'(Opt)'}</label><input type="text" id="p${i}-discord" maxlength="32" oninput="validateField('p${i}-discord')"></div>
+          </div>
+          <div class="section-label">Rank</div>
+          <div class="field required-field"><div class="rank-grid" id="rankGrid-p${i}"></div></div>
+          <div class="section-label">Position</div>
+          <div class="field required-field"><div class="pos-grid" id="posGrid-p${i}"></div></div>
+        </div>`;
+      }
+      for (let i = 1; i <= 5; i++) { buildRankGrid('rankGrid-p'+i, 'p'+i); buildPosGrid('posGrid-p'+i, 'p'+i); }
+    }
+
+    function getVal(id) { return document.getElementById(id) ? document.getElementById(id).value.trim() : ''; }
+    function getRadio(name) { const el = document.querySelector(`input[name="${name}"]:checked`); return el ? el.value : ''; }
+    function setInvalid(id, inv) { const el = document.getElementById(id); if(el) el.classList.toggle('invalid', inv); }
+
+    function validateField(id) {
+      const val = getVal(id);
+      if (id === 'steamId' || id.endsWith('-steam')) {
+        const isCap = id === 'steamId' || id === 'p1-steam';
+        if (isCap) setInvalid('f-'+id, val.length !== 17);
+        else if (val) setInvalid('f-'+id, val.length !== 17);
+        else setInvalid('f-'+id, false);
+      } else if (id === 'discordUser' || id.endsWith('-discord')) {
+        // Discord is always optional for non-captain, and generally optional here
+        setInvalid('f-'+id, false);
+      } else {
+        setInvalid('f-'+id, !val);
+      }
+    }
+
+    function saveDraft() {
+      const data = {
+        mode: currentMode,
+        solo: {
+          ign: getVal('ign'),
+          steamName: getVal('steamName'),
+          steamId: getVal('steamId'),
+          discord: getVal('discordUser'),
+          rank: getRadio('rank-solo'),
+          pos: getRadio('pos-solo')
+        },
+        team: {
+          teamName: getVal('teamName'),
+          players: []
+        }
+      };
+      for(let i=1; i<=5; i++) {
+        data.team.players.push({
+          ign: getVal(`p${i}-ign`),
+          steamName: getVal(`p${i}-steamName`),
+          steamId: getVal(`p${i}-steam`),
+          discord: getVal(`p${i}-discord`),
+          rank: getRadio(`rank-p${i}`),
+          pos: getRadio(`pos-p${i}`)
+        });
+      }
+      localStorage.setItem('secretleague_draft_v2', JSON.stringify(data));
+    }
+
+    function loadDraft() {
+      const saved = localStorage.getItem('secretleague_draft_v2');
+      if (!saved) return;
+      try {
+        const data = JSON.parse(saved);
+        if (data.mode) setMode(data.mode);
+        if (data.solo) {
+          if(document.getElementById('ign')) document.getElementById('ign').value = data.solo.ign || '';
+          if(document.getElementById('steamName')) document.getElementById('steamName').value = data.solo.steamName || '';
+          if(document.getElementById('steamId')) document.getElementById('steamId').value = data.solo.steamId || '';
+          if(document.getElementById('discordUser')) document.getElementById('discordUser').value = data.solo.discord || '';
+          if(data.solo.rank) { const rb = document.querySelector(`input[name="rank-solo"][value="${data.solo.rank}"]`); if(rb) rb.checked = true; }
+          if(data.solo.pos) { const rb = document.querySelector(`input[name="pos-solo"][value="${data.solo.pos}"]`); if(rb) rb.checked = true; }
+        }
+        if (data.team) {
+          if(document.getElementById('teamName')) document.getElementById('teamName').value = data.team.teamName || '';
+          if(data.team.players) {
+            data.team.players.forEach((p, i) => {
+              const idx = i + 1;
+              if(document.getElementById(`p${idx}-ign`)) document.getElementById(`p${idx}-ign`).value = p.ign || '';
+              if(document.getElementById(`p${idx}-steamName`)) document.getElementById(`p${idx}-steamName`).value = p.steamName || '';
+              if(document.getElementById(`p${idx}-steam`)) document.getElementById(`p${idx}-steam`).value = p.steamId || '';
+              if(document.getElementById(`p${idx}-discord`)) document.getElementById(`p${idx}-discord`).value = p.discord || '';
+              if(p.rank) { const rb = document.querySelector(`input[name="rank-p${idx}"][value="${p.rank}"]`); if(rb) rb.checked = true; }
+              if(p.pos) { const rb = document.querySelector(`input[name="pos-p${idx}"][value="${p.pos}"]`); if(rb) rb.checked = true; }
+            });
+          }
+        }
+      } catch (e) { console.error('Failed to load draft'); }
+    }
+
+    async function handleSubmit() {
+      let ok = true;
+      let payload = { embeds: [] };
+
+      if (currentMode === 'solo') {
+        const ign = getVal('ign'), sName = getVal('steamName'), sid = getVal('steamId'), discord = getVal('discordUser'), rank = getRadio('rank-solo'), pos = getRadio('pos-solo');
+        
+        validateField('ign'); validateField('steamName'); validateField('steamId');
+        if(!ign || !sName || sid.length !== 17 || !rank || !pos) ok = false;
+        
+        document.getElementById('rankErr-solo').style.display = !rank ? 'block' : 'none';
+        document.getElementById('posErr-solo').style.display = !pos ? 'block' : 'none';
+
+        if(ok) {
+          payload.embeds.push({
+            title: "⚔️ New Solo Registration",
+            color: 0xc89b3c,
+            fields: [
+              { name: "IGN", value: ign, inline: true },
+              { name: "Steam Name", value: sName, inline: true },
+              { name: "Discord", value: discord || "N/A", inline: true },
+              { name: "Rank", value: rank, inline: true },
+              { name: "Position", value: "Pos " + pos, inline: true },
+              { name: "Steam ID", value: `[${sid}](https://steamcommunity.com/profiles/${sid})` }
+            ]
+          });
+        }
+      } else {
+        const tname = getVal('teamName');
+        validateField('teamName');
+        if(!tname) ok = false;
+
+        let playersData = [];
+        for (let i = 1; i <= 5; i++) {
+          const ign = getVal(`p${i}-ign`), sName = getVal(`p${i}-steamName`), sid = getVal(`p${i}-steam`), rank = getRadio(`rank-p${i}`), pos = getRadio(`pos-p${i}`);
+          validateField(`p${i}-ign`); validateField(`p${i}-steamName`); validateField(`p${i}-steam`);
+          
+          if(!ign || !sName || (i===1 && sid.length !== 17) || (sid && sid.length !== 17) || !rank || !pos) ok = false;
+          
+          playersData.push({ ign, sName, sid, rank, pos });
+        }
+
+        if(ok) {
+          payload.embeds.push({
+            title: `🛡️ New Team Registration: ${tname}`,
+            color: 0x7b5ea7,
+            fields: playersData.map((p, i) => ({
+              name: `Player ${i+1}${i===0?' (Captain)':''}`,
+              value: `**IGN:** ${p.ign}\n**Steam:** ${p.sName}\n**Rank:** ${p.rank}\n**Pos:** ${p.pos}\n**ID:** ${p.sid || 'N/A'}`,
+              inline: true
+            }))
+          });
+        }
+      }
+
+      if (!ok) {
+        window.scrollTo({ top: document.querySelector('.invalid') ? document.querySelector('.invalid').offsetTop - 100 : 0, behavior: 'smooth' });
+        return;
+      }
+
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = '🛡️ TRANSMITTING...';
+      
+      const WEBHOOK = 'https://discord.com/api/webhooks/1495881873140879361/Zff09vcmsBRf9f18XQ7Yh0hrdoCqORI-yCF8B2xI9WRxOq17GE-E2nZXjlfkzK0SH98K';
+      const SPREADSHEET_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzI9g70JMt7DYZh7RGXSCDydWE5wFit2JD-Y0bCKvK2VuQq6uAkyUxei491gqVEHWjkMA/exec'; // Add your Google Apps Script URL here
+
+      try {
+        // 1. Send to Discord
+        const discordRes = await fetch(WEBHOOK, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        // 2. Send to Google Sheets (if URL is provided)
+         if (SPREADSHEET_SCRIPT_URL) {
+           const sheetData = currentMode === 'solo' ? {
+             type: 'solo',
+             timestamp: new Date().toLocaleString(),
+             ign: getVal('ign'),
+             steam: getVal('steamId'),
+             discord: getVal('discordUser'),
+             rank: getRadio('rank-solo'),
+             position: getRadio('pos-solo')
+           } : {
+             type: 'team',
+             timestamp: new Date().toLocaleString(),
+             teamName: getVal('teamName'),
+             players: [1,2,3,4,5].map(i => ({
+               ign: getVal(`p${i}-ign`),
+               steam: getVal(`p${i}-steam`),
+               rank: getRadio(`rank-p${i}`),
+               position: getRadio(`pos-p${i}`)
+             }))
+           };
+
+           await fetch(SPREADSHEET_SCRIPT_URL, {
+             method: 'POST',
+             mode: 'no-cors',
+             headers: { 'Content-Type': 'application/json' },
+             body: JSON.stringify(sheetData)
+           });
+         }
+
+        if(discordRes.ok) {
+          document.getElementById('formContent').style.display = 'none';
+          document.getElementById('successMsg').style.display = 'flex';
+          localStorage.removeItem('secretleague_draft_v2');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          throw new Error();
+        }
+      } catch (e) {
+        alert('Transmission failed. Please check your connection and try again.');
+        btn.disabled = false;
+        btn.textContent = '⚔ Submit Entry ⚔';
+      }
+    }
+  </script>
 </body>
 </html>
