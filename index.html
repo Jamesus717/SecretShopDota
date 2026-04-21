@@ -642,13 +642,16 @@
              }))
            };
 
-           await fetch(SPREADSHEET_SCRIPT_URL, {
-             method: 'POST',
-             mode: 'no-cors',
-             headers: { 'Content-Type': 'application/json' },
-             body: JSON.stringify(sheetData)
-           });
-         }
+           console.log('Sending to spreadsheet:', sheetData);
+            fetch(SPREADSHEET_SCRIPT_URL, {
+              method: 'POST',
+              mode: 'no-cors',
+              cache: 'no-cache',
+              headers: { 'Content-Type': 'text/plain' }, // Using text/plain avoids CORS preflight issues
+              body: JSON.stringify(sheetData)
+            }).then(() => console.log('Spreadsheet request sent (check sheet for results)'))
+              .catch(err => console.error('Spreadsheet error:', err));
+          }
 
         if(discordRes.ok) {
           document.getElementById('formContent').style.display = 'none';
