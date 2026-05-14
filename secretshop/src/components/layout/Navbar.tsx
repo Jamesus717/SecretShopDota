@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
+import { AuthButton, AuthButtonMobile } from '@/components/auth/AuthButton'
 
 const links = [
   { href: '/',           label: 'Home' },
@@ -56,13 +57,8 @@ export function Navbar() {
           ))}
         </nav>
 
-        {/* CTA */}
-        <Link
-          href="/register"
-          className="hidden md:inline-flex btn-primary text-xs py-2 px-4"
-        >
-          Sign Up
-        </Link>
+        {/* Auth */}
+        <AuthButton />
 
         {/* Mobile hamburger */}
         <button
@@ -91,13 +87,7 @@ export function Navbar() {
               {l.label}
             </Link>
           ))}
-          <Link
-            href="/register"
-            onClick={() => setOpen(false)}
-            className="btn-primary mt-2 text-xs py-2"
-          >
-            Sign Up for Season I
-          </Link>
+          <AuthButtonMobile />
         </div>
       )}
     </header>

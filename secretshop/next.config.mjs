@@ -5,6 +5,7 @@ const nextConfig = {
       { protocol: 'https', hostname: 'avatars.steamstatic.com' },
       { protocol: 'https', hostname: 'cdn.cloudflare.steamstatic.com' },
       { protocol: 'https', hostname: 'www.opendota.com' },
+      { protocol: 'https', hostname: 'cdn.discordapp.com' },
     ],
   },
 }

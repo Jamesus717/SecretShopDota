@@ -11,14 +11,17 @@ interface CountdownProps {
 }
 
 export function Countdown({ targetDate, label = 'Tournament Begins', className }: CountdownProps) {
-  const [time, setTime] = useState(getCountdown(targetDate))
+  const [time, setTime] = useState<ReturnType<typeof getCountdown> | null>(null)
 
   useEffect(() => {
+    setTime(getCountdown(targetDate))
     const interval = setInterval(() => {
       setTime(getCountdown(targetDate))
     }, 1000)
     return () => clearInterval(interval)
   }, [targetDate])
+
+  if (!time) return <div className="h-[96px]" />
 
   if (time.expired) {
     return (

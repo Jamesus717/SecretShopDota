@@ -30,16 +30,24 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen bg-void-950 text-arcane-100 antialiased">
-        {/* Ambient background — forest canopy depth */}
+        {/* Ambient background */}
         <div className="fixed inset-0 pointer-events-none overflow-hidden">
-          {/* Canopy glow — diffuse green light filtering from above */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1100px] h-[550px]
-                          bg-arcane-700/18 blur-[160px] rounded-full" />
-          {/* Warm bark glow — subtle ground warmth */}
-          <div className="absolute bottom-0 left-1/3 w-[700px] h-[350px]
-                          bg-gold-800/8 blur-[130px] rounded-full" />
-          {/* Leaf-vein grid overlay */}
-          <div className="absolute inset-0 bg-arcane-grid opacity-100" />
+          {/* Background image */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/background.jpg"
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ opacity: 0.38 }}
+          />
+          {/* Dark overlay — keeps text readable */}
+          <div className="absolute inset-0 bg-void-950/80" />
+          {/* Canopy glow — diffuse green tint from above */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1100px] h-[500px]
+                          bg-arcane-800/30 blur-[140px] rounded-full" />
+          {/* Warm bark glow at bottom */}
+          <div className="absolute bottom-0 left-1/3 w-[700px] h-[300px]
+                          bg-gold-900/20 blur-[120px] rounded-full" />
         </div>
 
         <div className="relative z-10">

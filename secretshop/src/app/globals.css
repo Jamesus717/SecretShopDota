@@ -172,14 +172,6 @@
     background: rgba(106,162,40,0.07);
   }
 
-  /* ── Woodland grid bg ────────────────────────────────────────────── */
-  .bg-arcane-grid {
-    background-image:
-      linear-gradient(rgba(106,162,40,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(106,162,40,0.04) 1px, transparent 1px);
-    background-size: 40px 40px;
-  }
-
   /* ── Shimmer effect ──────────────────────────────────────────────── */
   .shimmer {
     background: linear-gradient(
