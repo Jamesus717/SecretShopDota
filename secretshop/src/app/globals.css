@@ -1,0 +1,212 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #050b04;
+    color: #d8e8c5;
+    font-family: 'Rajdhani', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: rgba(106, 162, 40, 0.35);
+    color: #edf4e4;
+  }
+
+  /* Custom scrollbar — bark tones */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #0b120a; }
+  ::-webkit-scrollbar-thumb { background: #273b1c; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #426417; }
+}
+
+@layer components {
+  /* ── Woodland Card ───────────────────────────────────────────────── */
+  /* Subtle directional gradient suggests wood grain */
+  .card-arcane {
+    @apply relative border border-arcane-700/25 rounded-sm overflow-hidden;
+    background: linear-gradient(160deg, #172311 0%, #111a0d 60%, #0f1a0b 100%);
+    box-shadow: 0 4px 40px rgba(5, 11, 4, 0.9), inset 0 0 30px rgba(106, 162, 40, 0.04);
+  }
+
+  /* Dappled-light top edge — amber centre fading to moss */
+  .card-arcane::before {
+    content: '';
+    @apply absolute top-0 left-0 right-0 h-px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(199, 145, 47, 0.45),
+      rgba(106, 162, 40, 0.35),
+      rgba(199, 145, 47, 0.45),
+      transparent
+    );
+  }
+
+  /* Asymmetric corner ornaments — warm top-left, cool top-right */
+  .card-arcane::after {
+    content: '';
+    @apply absolute inset-0 pointer-events-none;
+    background:
+      linear-gradient(135deg, rgba(199,145,47,0.09) 0px, transparent 36px) top left,
+      linear-gradient(225deg, rgba(106,162,40,0.07) 0px, transparent 36px) top right,
+      linear-gradient(315deg, rgba(199,145,47,0.09) 0px, transparent 36px) bottom right,
+      linear-gradient(45deg,  rgba(106,162,40,0.07) 0px, transparent 36px) bottom left;
+    background-size: 36px 36px;
+    background-repeat: no-repeat;
+  }
+
+  /* ── Buttons ─────────────────────────────────────────────────────── */
+  .btn-primary {
+    @apply relative inline-flex items-center justify-center gap-2
+           px-6 py-3 font-cinzel font-bold uppercase tracking-widest text-sm
+           border border-arcane-600 text-arcane-100
+           transition-all duration-300 overflow-hidden;
+    background: linear-gradient(135deg, rgba(106,162,40,0.16), rgba(106,162,40,0.04));
+  }
+
+  .btn-primary:hover {
+    @apply border-arcane-400 text-arcane-50;
+    box-shadow: 0 0 28px rgba(106,162,40,0.35);
+  }
+
+  .btn-primary:active {
+    transform: translateY(1px);
+  }
+
+  .btn-rune {
+    @apply relative inline-flex items-center justify-center gap-2
+           px-6 py-3 font-cinzel font-bold uppercase tracking-widest text-sm
+           border border-rune-600 text-rune-200
+           transition-all duration-300;
+    background: linear-gradient(135deg, rgba(54,151,72,0.16), rgba(54,151,72,0.04));
+  }
+
+  .btn-rune:hover {
+    @apply border-rune-400 text-rune-50;
+    box-shadow: 0 0 20px rgba(54,151,72,0.35);
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2
+           px-4 py-2 font-cinzel text-xs uppercase tracking-widest
+           border border-void-500 text-arcane-300/60
+           transition-all duration-200 hover:border-arcane-600 hover:text-arcane-200;
+  }
+
+  /* ── Section Label — warm amber, like sunlight between leaves ────── */
+  .section-label {
+    @apply flex items-center gap-3 font-cinzel text-xs font-bold
+           uppercase tracking-widest text-gold-300 mb-4;
+  }
+
+  .section-label::after {
+    content: '';
+    @apply flex-1 h-px;
+    background: linear-gradient(90deg, rgba(199,145,47,0.3), transparent);
+  }
+
+  /* ── Rank Badge ──────────────────────────────────────────────────── */
+  .rank-badge {
+    @apply inline-flex items-center gap-1.5 px-2 py-0.5
+           font-cinzel text-xs font-bold uppercase tracking-wide
+           border rounded-sm;
+  }
+
+  /* ── Input ───────────────────────────────────────────────────────── */
+  .input-arcane {
+    @apply w-full bg-void-900 border border-void-500 rounded-sm
+           px-3 py-2.5 font-mono text-sm text-arcane-100
+           outline-none transition-all duration-200
+           placeholder:text-arcane-400/30;
+  }
+
+  .input-arcane:focus {
+    @apply border-arcane-500;
+    box-shadow: 0 0 0 3px rgba(106,162,40,0.1);
+  }
+
+  /* ── Diamond divider ─────────────────────────────────────────────── */
+  .diamond-divider {
+    @apply flex items-center gap-3 my-6;
+  }
+
+  .diamond-divider::before,
+  .diamond-divider::after {
+    content: '';
+    @apply flex-1 h-px;
+    background: linear-gradient(90deg, transparent, rgba(199,145,47,0.35));
+  }
+
+  .diamond-divider::after {
+    background: linear-gradient(270deg, transparent, rgba(199,145,47,0.35));
+  }
+
+  /* ── Nav link ────────────────────────────────────────────────────── */
+  .nav-link {
+    @apply font-cinzel text-xs font-bold uppercase tracking-widest
+           text-arcane-300/60 px-3 py-2 border border-transparent
+           transition-all duration-200 hover:text-arcane-200 hover:border-arcane-700/50;
+  }
+
+  .nav-link.active {
+    @apply text-arcane-200 border-arcane-600/50;
+    background: rgba(106,162,40,0.07);
+  }
+
+  /* ── Woodland grid bg ────────────────────────────────────────────── */
+  .bg-arcane-grid {
+    background-image:
+      linear-gradient(rgba(106,162,40,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(106,162,40,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* ── Shimmer effect ──────────────────────────────────────────────── */
+  .shimmer {
+    background: linear-gradient(
+      105deg,
+      transparent 40%,
+      rgba(106,162,40,0.1) 50%,
+      transparent 60%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2.5s linear infinite;
+  }
+}
+
+@layer utilities {
+  .text-glow-arcane {
+    text-shadow: 0 0 20px rgba(106,162,40,0.45), 0 0 40px rgba(106,162,40,0.18);
+  }
+
+  .text-glow-rune {
+    text-shadow: 0 0 20px rgba(54,151,72,0.45), 0 0 40px rgba(54,151,72,0.18);
+  }
+
+  .text-glow-gold {
+    text-shadow: 0 0 20px rgba(199,145,47,0.5), 0 0 40px rgba(199,145,47,0.2);
+  }
+
+  .border-shimmer {
+    border-image: linear-gradient(90deg, transparent, rgba(106,162,40,0.5), transparent) 1;
+  }
+}
